@@ -1,5 +1,16 @@
 # Script principal para análise de RNA-seq
 
+# instalar packages do CRAN e Bioconductor
+cran_pkgs <- c("tidyverse", "pheatmap", "PCAtools")
+bio_pkgs <- c("limma", "BiocManager", "DESeq2", "edgeR", "fgsea")
+
+install.packages(cran_pkgs)
+
+if (!requireNamespace("BiocManager", quietly = TRUE))
+    install.packages("BiocManager")
+BiocManager::install(bio_pkgs)
+
+
 # Carregar bibliotecas necessárias
 library(tidyverse)
 library(limma)

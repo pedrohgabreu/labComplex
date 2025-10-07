@@ -1,9 +1,20 @@
+# instalar packages do CRAN e Bioconductor
+cran_pkgs <- c("tidyverse", "dplyr")
+bio_pkgs <- c("oligo", "GEOquery")
+
+install.packages(cran_pkgs)
+
+if (!requireNamespace("BiocManager", quietly = TRUE))
+    install.packages("BiocManager")
+BiocManager::install(bio_pkgs)
+
+# carregar libs
 library(tidyverse)
 library(dplyr)
 library(oligo)
 library(GEOquery)
 
-# primeiramente, baixaar e extrair os dados do site
+# primeiramente, baixar e extrair os dados do site
 # codigo para extrair os metadados e dados do chip (IDs para simbolos de genes) 
 meta <- getGEO("GSE162785", GSEMatrix = TRUE)
 metadata_GSE162785 <- pData(meta[[1]])

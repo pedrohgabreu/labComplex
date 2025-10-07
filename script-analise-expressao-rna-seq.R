@@ -1,12 +1,30 @@
+# instalar packages do CRAN e Bioconductor
+cran_pkgs <- c("openxlsx", "pheatmap", "RColorBrewer", "ggplot2", "ggfortify", "gdtools")
+bio_pkgs <- c("DESeq2", "edgeR", "SummarizedExperiment", "affy", "clusterProfiler", "fgsea", "ggiraph", "shadowtext", "enrichplot")
+
+install.packages(
+  "https://bioconductor.org/packages/3.18/bioc/src/contrib/ggtree_3.10.1.tar.gz",
+  repos = NULL,
+  type = "source"
+)
+
+install.packages(cran_pkgs)
+
+BiocManager::install()
+if (!requireNamespace("BiocManager", quietly = TRUE))
+    install.packages("BiocManager")
+BiocManager::install(bio_pkgs)
+
+# Carregar libs necessárias
 library(DESeq2)
 library(edgeR)
 library(openxlsx)
 library(SummarizedExperiment) 
-library("pheatmap")
-library("RColorBrewer")
-library("ggplot2")
-library("affy")
-library("ggfortify")
+library(pheatmap)
+library(RColorBrewer)
+library(ggplot2)
+library(affy)
+library(ggfortify)
 library(clusterProfiler)
 library(fgsea)
 
