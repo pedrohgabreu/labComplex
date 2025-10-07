@@ -1,0 +1,1472 @@
+---
+title: "RNA-seq Data Analysis Workflow"
+author: "by Alberto Berral, Natalia Alonso & Javier De Las Rivas (CiC-IBMCC, CSIC/USAL)"
+date: "Updated 01.Jun.2024"
+output:
+ pdf_document: default
+ html_document: default
+editor_options: 
+  markdown: 
+    wrap: 72
+  chunk_output_type: inline
+---
+
+### Bulk RNA-seq analyses: based on "fastq2counts" pipeline (from raw fastq data to gene expression calculation)
+
+## Abstract:
+
+This pipeline aims to provide a quick and easy way to prepare an RNA-seq
+raw-counts matrix from **fastq** files together with the related experiment
+information, being each part of the process explained step by step. In
+addition, we will do all the steps with an example: a sample set of 10 
+samples from **GSE162104**, that includes RNA-seq of primary colorectal 
+cancer cell lines (60 samples), done with Illumina HiSeq 4000 (Homo sapiens):
+<**https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE162104**>
+
+## Introduction:
+
+When working with differential expression statistical methods such as
+DESeq2, Limma voom, edgeR, baySeq, etc., it is necessary to start from
+non-normalized data to perform the corresponding analysis because these
+algorithms already have inside methods of normalization and data scaling.
+Usually, the data offered in different repositories, such as NCBI, is
+normalized. However, it is possible to download the RNA-seq data of each
+sample in **fastq** format individually. Thus below are the necessary steps
+to arrive at the final **counts matrix**.
+
+## Methods & Packages Required:
+
+-   Sra-toolkit v(2.10.7+dfsg-1)
+-   Fastqc v(0.11.9)
+-   Trimmomatic v(0.39)
+-   Salmon v(1.3.0)
+-   R & RStudio v(4.3.1) % v(2023.09.1+494)
+
+## Data download:
+
+There are different repositories where you can find datasets or projects
+to analyze. In this pipeline, we will use NCBI
+([**https://www.ncbi.nlm.nih.gov/geo/browse/?view=series**](https://www.ncbi.nlm.nih.gov/geo/browse/?view=series){.uri}).
+Once you have chosen the project, you have to locate the 'RUN code' of
+each of the samples we want to download, these codes can be accessed
+using the tool SRA RUN SELECTOR TOOL. In this example we will use
+**GSE162104**.
+
+![](assets/1.png){width="656"}
+
+![](assets/2.png){height="500"}
+
+Once the desired samples have been selected, we will download the
+'**Accession List**' to indicate to the algorithm the files you want to
+work with. We will download these 10 files:
+SRR13127892, SRR13127893, SRR13127894, SRR13127895, SRR13127896,
+SRR13127898, SRR13127899, SRR13127900, SRR13127901, SRR13127930
+
+It is important to check if the samples of the chosen project are
+**single-end** or **paired-end** RNA-Seq. We can do this by checking the SRA
+information in the Library Layout section.
+
+![](assets/3.png){height="250"}
+
+As we can see, in this case we have a single layout. So we will use the
+single type bash scripts.
+
+## Terminal (UBUNTU or other LINUX Terminal)
+
+### Download data:
+
+Note: Before starting with the download script, it is necessary to
+create a directory where we will store all of the files (the bash
+scripts, samples, etc.). The **Accession List** mentioned above should
+also be saved in this directory. The data download function to save as
+**download_data.sh**.
+
+To run this script, a terminal should be opened from the directory
+mentioned above and type the following command:
+
+**bash download_data.sh SRR_Acc_List.txt**
+
+After running the script and if everything went smoothly we should have
+something like this:
+
+![](assets/4.png){width="668"}
+
+\*\*: If openssl certificate error update sra toolkit.
+
+**Inside the** samples_sra folder\*\* are the .sra files we have
+downloaded. Inside the **fastq_files folder** are the same files but
+converted to fastq file format, which is the one we are going to use.
+
+### Quality Check:
+
+Once we have the **fastq** files, it is necessary to check their quality.
+The quality of each of the samples can be analyzed using the **fastqc**
+tool. Additionally, with the **trimmomatic** tool, we can trim those that do
+not meet the quality requirements. The bash script with the quality
+control functions is **quality_control\_####.sh**:
+
+To run this script a terminal should be opened from the directory
+mentioned above and type the following command depending on the type of
+data we have (single end or paired end):
+
+**bash quality_control_single-end.sh SRR_Acc_List.txt**
+
+After running the script we should have a new folder, **Quality_html**:
+
+![](assets/7.png){height="150"}
+
+Depending on which experiment we are analyzing, it will be necessary to
+look at some parameters or others. For example, if the objective is to
+analyze the differential expression in samples referring to a type of
+cancer, the sections 'Per base sequence quality' and 'Per sequence
+quality scores' would be significant, while others like' Sequence
+Duplication Levels' would not have as much relevance.
+
+![](assets/5.png){height="450"}
+
+If we have a lot of samples, we could run the script **fastqc_eval.py**
+using Python3:
+
+**python3 fastqc_eval.py**
+
+As output we will have **fastqc_summary_output.csv**, a table with each
+sample on the rows, and the quality parameters as columns. Using Excel
+or another software, we can color the cells using conditional format to
+check big sample sizes.
+
+![](assets/6.png){height="150"}
+
+Once we have verified the quality of the samples, if all are valid, we
+would proceed with the alignment. On the contrary, it would be necessary
+to trim those bad-quality samples. You need to create a .txt with the
+names of the samples to be trimmed separated in the same way as in the
+**Accession List file**, the bash script with the functions for trimming
+the samples to be saved as **trimmomatic_single-end.sh**.
+
+You can find the number of bp in the fastqc reports generated in the
+previous section, **'Sequence Length Distribution'**, where the number of bp
+is the value on the x-axis with the highest value on the y-axis. In this
+example, the argument for introducing in MINLEN would be MINLEN: 26
+since (51/2) + 1 = 26.
+
+![](assets/99.png){width="668" height="384"}
+
+It is necessary to have previously the **list of illumina adapters**: open a
+txt file and save it in the directory such as Illumina_Adapters_SE.fa:
+
+```{text eval = FALSE}
+>TruSeq2_SE
+AGATCGGAAGAGCTCGTATGCCGTCTTCTGCTTG
+>TruSeq2_PE_f
+AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGT
+>TruSeq2_PE_r
+AGATCGGAAGAGCGGTTCAGCAGGAATGCCGAG
+>TruSeq3_IndexedAdapter
+AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC
+>TruSeq3_UniversalAdapter
+AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGTA
+```
+
+To run this script a terminal should be opened from the directory
+mentioned above and type the following command:
+
+**bash trimmomatic_single-end.sh SRR_Acc_List_totrim.txt**
+
+In case we wanted all SRR files to be trimmed we could use the
+SRR_Acc_List.txt file.
+
+We can run again the quality control commando to check that the trimming
+is good. We need to run:
+
+**bash quality_control_single-end.sh SRR_Acc_List.txt** and then
+**python3 fastqc_eval.py**
+
+### Alignment and quantification:
+
+To carry out this process, the **Salmon** tool will be used. The first step
+is to create a reference index. The bash file we run is:
+
+**bash salmon_index.sh**.
+
+-   In case of error, curl might need to be installed.
+
+Inside the **gencode** folder is the gencode.vXX.transcripts.fa.gz file,
+that can be also downloaded from <https://www.gencodegenes.org/human/>
+for another version. Once the index is generated, we proceed to the make
+the alignment with the script **salmon_alignment.sh**. Open a terminal
+in the working directory and run:
+
+**bash salmon_alignment.sh SRR_Acc_List.txt**.
+
+After we run everything our folder should looks like this:
+
+![](assets/8.png){height="400"}
+
+# R & Rstudio
+
+### Reading data in R:
+
+INSTALL the following PACKAGES using 'pacman': **tximeta**, **SummarizedExperiment**, **tidyverse**, **ggplot2** 
+... or ... better INSTALL the PACKAGES from Bioconductor (installing  all the OR from R-cran one by one:
+
+```{r eval=FALSE}
+# Basic R-project layout
+ifelse(file.exists('data/'), '', dir.create('data/'))
+ifelse(file.exists('figs/'), '', dir.create('figs/'))
+ifelse(file.exists('output/'), '', dir.create('output/'))
+# Package manager for R
+install.packages("pacman")
+# These are the packages we are going to use
+pacman::p_load(tximeta, SummarizedExperiment, tidyverse, ggplot2)
+```
+
+```{r eval=FALSE}
+# Better instal the PACKAGES from Bioconductor OR from R-cran one by one:
+
+# Bioconductor packages: tximeta, SummarizedExperiment
+if (!require("BiocManager", quietly = TRUE))
+    install.packages("BiocManager") 
+# BiocManager::install(version = "3.15")
+BiocManager::install(version = "3.18")
+#
+library("tximeta") 
+library("SummarizedExperiment") 
+
+# R-cran packages: tidyverse, ggplot2 
+install.packages("tidyverse")
+library("tidyverse")
+install.packages("ggplot2")
+library("ggplot2")
+
+# Just in case the Installation of BIOCONDUCTOR 3.18 was not complete or 
+# we need to update some packages:
+# BiocManager::install(c("tximeta", "SummarizedExperiment"), force=TRUE)
+# install.packages("dbplyr")
+
+```
+
+Before importing the data, it is necessary to download the **sample information** 
+from the experiment. To do this, we return to the SRA RUN SELECTOR to download 
+the metadata (.txt format). After, we need to choose the information of interest.
+
+```{r eval=FALSE}
+coldata <- read.csv('SraRunTable.txt')
+coldata <- coldata[,c('Run', 'cetuximab_resistance', 'disease_state')]
+names(coldata)[1] <- "names"
+```
+
+It is necessary to factorize those variables that, in a future analysis,
+we want to use to define the model. Also, we changed the special
+characters and empty spaces to avoid future problems.
+
+```{r eval=FALSE}
+coldata$cetuximab_resistance <- as.factor(coldata$cetuximab_resistance)
+```
+
+Finally, we add the files created by Salmon:
+
+```{r eval=FALSE}
+# Put the whole directory path to the folder or have the files in the working directory.
+# This .sf files are the ones generated with Salmon during the alignment & quantification
+coldata$files <- file.path(paste0('salmon_quants/', coldata$names, "_quant/quant.sf"))
+class(coldata)
+colnames(coldata)
+```
+
+
+### Upload FILE salmon_quants:
+
+```{r eval=FALSE}
+# How is the format of the data table?
+str(coldata)
+```
+
+```{text eval=FALSE}
+'data.frame':	10 obs. of  4 variables:
+ $ names               : chr  "SRR13127892" "SRR13127893" "SRR13127894" "SRR13127895" ...
+ $ cetuximab_resistance: Factor w/ 2 levels "resistant","sensitive": 1 1 1 1 1 2 2 2 2 2
+ $ disease_state       : chr  "primary colorectal cancer cell line" "primary colorectal cancer cell line" "primary colorectal cancer cell line" "primary colorectal cancer cell line" ...
+ $ files               : chr  "salmon_quants/SRR13127892_quant/quant.sf" "salmon_quants/SRR13127893_quant/quant.sf" "salmon_quants/SRR13127894_quant/quant.sf" "salmon_quants/SRR13127895_quant/quant.sf" ...
+```
+
+This part of the workflow imports **transcript-level quantification data**,
+and then aggregate it to the gene-level with 'tximeta' (*Love et al. 2020*). 
+Transcript quantification methods such as 'Salmon' (*Patro et al. 2017*), 
+'kallisto' (*Bray et al. 2016*), or 'RSEM' (*Li and Dewey 2011*)
+perform **mapping or alignment of reads to reference transcripts**,
+outputting estimated counts per transcript as well as effective
+transcript lengths which summarize bias effects. After running one of
+these tools, 'tximeta' package is used to assemble estimated count and
+offset matrices for use later with differential gene expression
+packages (as it will be demonstrated below).
+
+Once the information on the samples has been prepared, the 'tximeta'
+package will be used to import the **transcripts-level data** generated by
+Salmon and then convert it to **gene-level data**.
+
+```{r eval=FALSE}
+getwd()
+# "/Users/javierd19/Desktop/R_RNAseq-vJun2024"
+# setwd("/Users/javierd19/Desktop/R_RNAseq-vJun2024")
+# load("env_13102022copy.RData")
+```
+
+```{r eval=FALSE}
+reads <- tximeta::tximeta(coldata)
+reads
+```
+
+```{text eval=FALSE}
+importing quantifications
+reading in files with read_tsv
+1 2 3 4 5 6 7 8 9 10 
+found matching transcriptome:
+[ GENCODE - Homo sapiens - release 38 ]
+loading existing TxDb created: 2022-01-13 16:57:07
+Loading required package: GenomicFeatures
+Loading required package: AnnotationDbi
+
+Attaching package: 'AnnotationDbi'
+
+The following object is masked from 'package:dplyr':
+
+    select
+
+loading existing transcript ranges created: 2022-01-13 16:57:10
+fetching genome info for GENCODE
+```
+
+```{r eval=FALSE}
+# Let's show the 10 first rows
+SummarizedExperiment::assay(reads)[1:10,]
+```
+
+```{text eval=FALSE}
+                  SRR13127892 SRR13127893 SRR13127894 SRR13127895
+ENST00000456328.2       0.000      13.931       10.23       0.000
+ENST00000450305.2       0.000       0.000        0.00       0.000
+ENST00000488147.1      72.828      89.245        0.00      15.349
+ENST00000619216.1       2.888       4.670        4.84      11.348
+ENST00000473358.1       0.000       0.000        0.00       0.000
+ENST00000469289.1       0.000       0.000        0.00       5.201
+ENST00000607096.1       0.000       0.994        0.00       0.000
+ENST00000417324.1       0.000       0.000        0.00       0.000
+ENST00000461467.1       0.000       0.000        0.00       0.000
+ENST00000606857.1       0.000       0.000        0.00       0.000
+                  SRR13127896 SRR13127898 SRR13127899 SRR13127900
+ENST00000456328.2           0       0.000       0.000       0.000
+ENST00000450305.2           0       0.000       0.000       0.000
+ENST00000488147.1           0     330.411     227.027       0.000
+ENST00000619216.1           0      11.641       9.599       7.210
+ENST00000473358.1           0       0.000       0.000       2.595
+ENST00000469289.1           0      16.082       0.000       0.000
+ENST00000607096.1           0       0.000       0.000       0.000
+ENST00000417324.1           0       0.000       0.000       0.000
+ENST00000461467.1           0       0.000       6.677       0.000
+ENST00000606857.1           0       0.000       0.000       0.000
+                  SRR13127901 SRR13127930
+ENST00000456328.2       0.000      11.633
+ENST00000450305.2       0.000       0.000
+ENST00000488147.1     134.763       0.000
+ENST00000619216.1       8.385      12.033
+ENST00000473358.1       1.340       0.000
+ENST00000469289.1       0.000       0.000
+ENST00000607096.1       0.000       0.000
+ENST00000417324.1       0.000       0.000
+ENST00000461467.1       0.000       1.218
+ENST00000606857.1       0.000       0.000
+```
+
+```{r eval=FALSE}
+# Whe change the transcripts to genes
+gse <- tximeta::summarizeToGene(reads)
+```
+
+```{text eval=FALSE}
+loading existing TxDb created: 2022-01-13 16:57:07
+obtaining transcript-to-gene mapping from database
+loading existing gene ranges created: 2022-01-13 16:58:23
+summarizing abundance
+summarizing counts
+summarizing length
+summarizing inferential replicates
+```
+
+```{r eval=FALSE}
+# What are now the firs 10?
+SummarizedExperiment::assay(gse)[1:10,]
+```
+
+```{text eval=FALSE}
+                   SRR13127892 SRR13127893 SRR13127894 SRR13127895
+ENSG00000000003.15     261.407     387.004     350.040     134.935
+ENSG00000000005.6        2.000       0.000       0.000       0.000
+ENSG00000000419.14     404.259     680.751     323.300     176.182
+ENSG00000000457.14     155.001     314.826      81.439      39.013
+ENSG00000000460.17     185.753     147.393     137.046     147.116
+ENSG00000000938.13       0.000       0.000       0.000       0.000
+ENSG00000000971.16       4.000       1.000       2.000       0.000
+ENSG00000001036.14     499.000     793.191     616.000     450.000
+ENSG00000001084.13     391.297     915.665     321.359     315.728
+ENSG00000001167.15     357.672     489.379     412.205     285.073
+                   SRR13127896 SRR13127898 SRR13127899 SRR13127900
+ENSG00000000003.15     343.523     838.667     755.914     228.669
+ENSG00000000005.6        0.000      15.000       6.000       0.000
+ENSG00000000419.14     200.147    1596.902     974.628     467.222
+ENSG00000000457.14      74.205     118.999     116.120      85.014
+ENSG00000000460.17      99.195     268.698     168.160      92.275
+ENSG00000000938.13       0.000     118.000      73.000       0.000
+ENSG00000000971.16       2.000       0.000       0.000       0.000
+ENSG00000001036.14     561.000     604.000     271.000     434.387
+ENSG00000001084.13     387.921     572.819     411.158     593.288
+ENSG00000001167.15     184.305     560.103     532.814     596.569
+                   SRR13127901 SRR13127930
+ENSG00000000003.15     676.098     745.451
+ENSG00000000005.6        2.000       0.000
+ENSG00000000419.14    1216.694     683.574
+ENSG00000000457.14     282.054     961.012
+ENSG00000000460.17     241.001     256.548
+ENSG00000000938.13       0.000       0.000
+ENSG00000000971.16       0.000       1.000
+ENSG00000001036.14    1833.542    2001.000
+ENSG00000001084.13    1172.119    1220.998
+ENSG00000001167.15     817.449     728.773
+```
+
+```{r eval=FALSE}
+# We check the column sum to see if there is bad samples
+colSums(SummarizedExperiment::assay(gse))
+```
+
+```{text eval=FALSE}
+Show in New Window
+SRR13127892 SRR13127893 SRR13127894 SRR13127895 SRR13127896 SRR13127898 
+   10670448    14107974    12099407     8106567    10953058    18348019 
+SRR13127899 SRR13127900 SRR13127901 SRR13127930 
+   13497475     8840468    19038433    15038555 
+```
+
+```{r eval=FALSE}
+# With this we could retrive the coldata that we added in the first step
+SummarizedExperiment::colData(gse)
+```
+
+```{text eval=FALSE}
+DataFrame with 10 rows and 3 columns
+                  names cetuximab_resistance          disease_state
+            <character>             <factor>            <character>
+SRR13127892 SRR13127892            resistant primary colorectal c..
+SRR13127893 SRR13127893            resistant primary colorectal c..
+SRR13127894 SRR13127894            resistant primary colorectal c..
+SRR13127895 SRR13127895            resistant primary colorectal c..
+SRR13127896 SRR13127896            resistant primary colorectal c..
+SRR13127898 SRR13127898            sensitive primary colorectal c..
+SRR13127899 SRR13127899            sensitive primary colorectal c..
+SRR13127900 SRR13127900            sensitive primary colorectal c..
+SRR13127901 SRR13127901            sensitive primary colorectal c..
+SRR13127930 SRR13127930            sensitive primary colorectal c..
+```
+
+```{r eval=FALSE}
+# We can now do some data processing
+coldata <- SummarizedExperiment::colData(gse)
+coldata$cetuximab_resistance
+```
+
+```{text eval=FALSE}
+Show in New Window
+ [1] resistant resistant resistant resistant resistant sensitive sensitive
+ [8] sensitive sensitive sensitive
+Levels: resistant sensitive
+```
+
+```{r eval=FALSE}
+count_mat <- round(SummarizedExperiment::assay(gse))
+dim(count_mat)
+summary(count_mat)
+head(count_mat,5)
+```
+
+```{text eval=FALSE}
+[1] 60230    10
+                   SRR13127892 SRR13127893 SRR13127894 SRR13127895
+ENSG00000000003.15         261         387         350         135
+ENSG00000000005.6            2           0           0           0
+ENSG00000000419.14         404         681         323         176
+ENSG00000000457.14         155         315          81          39
+ENSG00000000460.17         186         147         137         147
+                   SRR13127896 SRR13127898 SRR13127899 SRR13127900
+ENSG00000000003.15         344         839         756         229
+ENSG00000000005.6            0          15           6           0
+ENSG00000000419.14         200        1597         975         467
+ENSG00000000457.14          74         119         116          85
+ENSG00000000460.17          99         269         168          92
+                   SRR13127901 SRR13127930
+ENSG00000000003.15         676         745
+ENSG00000000005.6            2           0
+ENSG00000000419.14        1217         684
+ENSG00000000457.14         282         961
+ENSG00000000460.17         241         257
+```
+
+We filter the features that present too many zeros:
+
+```{r eval=FALSE}
+# Filter rows with row sum higher than 1
+print("How many starting rows do we have?")
+nrow(count_mat)
+keep <- rowSums(count_mat) > 10
+count_matF <- count_mat[keep,]
+print("How many rows do we have after 1st filtering?")
+nrow(count_matF)
+# Filter rows with values higher than 10 and rowsums higher than 3
+keep <- rowSums(count_mat >= 10) >= 3
+count_matFF <- count_mat[keep,]
+print("How many rows do we have after 2nd filtering?")
+nrow(count_matFF)
+# head(count_matF[,c(1,2,3,6,7,8)], 10)
+# head(count_matFF[,c(1,2,3,6,7,8)], 10)
+```
+
+```{text eval=FALSE}
+[1] "How many starting rows do we have?"
+[1] 60230
+[1] "How many rows do we have after 1st filtering?"
+[1] 25041
+[1] "How many rows do we have after 2nd filtering?"
+[1] 16949
+```
+
+Finally, we generate the final SummarizedExperiment object:
+
+```{r eval=FALSE}
+# RData gse:
+gse_final <- SummarizedExperiment::SummarizedExperiment(assays = count_matFF,
+                          rowData = rownames(count_matFF), colData = coldata)
+gse_final
+# The coldata in the object containing phenodata 
+gse_final@colData
+```
+
+```{text eval=FALSE}
+class: SummarizedExperiment 
+dim: 16949 10 
+metadata(0):
+assays(1): ''
+rownames(16949): ENSG00000000003.15 ENSG00000000419.14 ...
+  ENSG00000288722.1 ENSG00000288725.1
+rowData names(1): X
+colnames(10): SRR13127892 SRR13127893 ... SRR13127901 SRR13127930
+colData names(3): names cetuximab_resistance disease_state
+DataFrame with 10 rows and 3 columns
+                  names cetuximab_resistance          disease_state
+            <character>             <factor>            <character>
+SRR13127892 SRR13127892            resistant primary colorectal c..
+SRR13127893 SRR13127893            resistant primary colorectal c..
+SRR13127894 SRR13127894            resistant primary colorectal c..
+SRR13127895 SRR13127895            resistant primary colorectal c..
+SRR13127896 SRR13127896            resistant primary colorectal c..
+SRR13127898 SRR13127898            sensitive primary colorectal c..
+SRR13127899 SRR13127899            sensitive primary colorectal c..
+SRR13127900 SRR13127900            sensitive primary colorectal c..
+SRR13127901 SRR13127901            sensitive primary colorectal c..
+SRR13127930 SRR13127930            sensitive primary colorectal c..
+```
+
+```{r eval=FALSE}
+# The expression data
+gse_final@assays ; SummarizedExperiment::assay(gse_final)[1:4,]
+dim(SummarizedExperiment::assay(gse_final)[,])
+```
+
+```{text eval=FALSE}
+An object of class "SimpleAssays"
+Slot "data":
+List of length 1
+
+                   SRR13127892 SRR13127893 SRR13127894 SRR13127895
+ENSG00000000003.15         261         387         350         135
+ENSG00000000419.14         404         681         323         176
+ENSG00000000457.14         155         315          81          39
+ENSG00000000460.17         186         147         137         147
+                   SRR13127896 SRR13127898 SRR13127899 SRR13127900
+ENSG00000000003.15         344         839         756         229
+ENSG00000000419.14         200        1597         975         467
+ENSG00000000457.14          74         119         116          85
+ENSG00000000460.17          99         269         168          92
+                   SRR13127901 SRR13127930
+ENSG00000000003.15         676         745
+ENSG00000000419.14        1217         684
+ENSG00000000457.14         282         961
+ENSG00000000460.17         241         257
+[1] 16949    10
+```
+
+```{r eval=FALSE}
+# We can plot the expression for each sample, 
+# but before we generate a data matrix with the final GSE:
+gseMX_final <- as.matrix(SummarizedExperiment::assay(gse_final)[,])
+colnames(gseMX_final) <- c("resCRCc92","resCRCc93","resCRCc94","resCRCc95","resCRCc96",
+                           "senCRCc98","senCRCc99","senCRCc00","senCRCc01","senCRCc30")
+colSums(gseMX_final)
+```
+
+```{text eval=FALSE}
+resCRCc92 resCRCc93 resCRCc94 resCRCc95 resCRCc96 senCRCc98 senCRCc99 
+ 10650326  14064877  12059045   8086648  10934933  18287105  13448160 
+senCRCc00 senCRCc01 senCRCc30 
+  8804101  18974802  14987230 
+```
+
+```{r eval=FALSE}
+# Now we can plot the expression for each sample:
+par(oma=c(3,.5,.5,.5)) # all sides have 3 lines of space (bottom, left, top, right)) 
+# boxplot(log2(assay(gseMX_final)+1), las=2, col=c(rep("#005AB5" ,5), rep("#DC3220",5)))
+# for the boxplot deleted 'assay'  
+boxplot(log2(gseMX_final+1), las=2, col=c(rep("#005AB5" ,5), rep("#DC3220",5)))
+# boxplot(log2(gseMX_final+1), las=2, col=c(rep("red" ,5), rep("green",5)))
+```
+
+![](assets/bplot_raw.png){height="400"}
+
+And plot a heatmap
+
+```{r eval=FALSE}
+source('hmap.R')
+pacman::p_load(RColorBrewer, gplots, dendextend)
+col <- brewer.pal(11,"RdBu")
+col <- rev(col)
+
+colbars1 <- c(rep("#005AB5" ,5), rep("#DC3220",5))
+
+# Selecting GENES with highest SD (variability) over all samples
+gseMXlg <- log2(gseMX_final[,]+1)
+dim(gseMXlg)
+```
+
+```{text eval=FALSE}
+[1] 16949    10
+```
+
+```{r eval=FALSE}
+head(gseMXlg)
+class(gseMXlg)
+# rowMeans(gseMXlg)
+# summary(rowMeans(gseMXlg))
+rows_sd <- apply(gseMXlg, 1, sd)
+summary(rows_sd)
+```
+
+```{text eval=FALSE}
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+ 0.2564  0.8127  1.0589  1.2648  1.4956  5.4853
+```
+
+```{r eval=FALSE}
+rows_sd>1.5
+gseMXlg[rows_sd>1.5,]
+rows_sd>5.0
+gseMXlg[rows_sd>5.0,]
+# rowSds(gseMXlg)>1.5
+# gseMXlg[rowSds(gseMXlg)>5.0,]
+```
+
+```{text eval=FALSE}
+                   resCRCc92 resCRCc93 resCRCc94 resCRCc95 resCRCc96
+ENSG00000086548.9   2.584963  2.321928  6.169925  5.087463  2.807355
+ENSG00000129824.16  0.000000  0.000000  0.000000  0.000000 11.551708
+ENSG00000161798.7   5.000000  4.584963  1.000000  1.584963  2.000000
+ENSG00000166825.15  7.577429  7.577429  3.584963  3.906891  4.321928
+ENSG00000220842.6  10.455327 12.184875  0.000000  0.000000  0.000000
+ENSG00000243509.6   5.882643  0.000000 13.286558 13.268396  5.672425
+                   senCRCc98 senCRCc99 senCRCc00 senCRCc01 senCRCc30
+ENSG00000086548.9  12.935533 12.096715 13.207472 14.562242  2.321928
+ENSG00000129824.16  2.321928  1.584963 10.853310 11.836445  0.000000
+ENSG00000161798.7   2.000000  0.000000 11.511753 12.378837 12.830515
+ENSG00000166825.15 14.509404 14.464546  2.321928  2.321928  0.000000
+ENSG00000220842.6  11.898223 10.151017 10.690871 12.062721 11.436191
+ENSG00000243509.6   0.000000  0.000000  7.426265  8.413628  3.906891
+```
+
+```{r eval=FALSE}
+# Selecting GENES with highest variability between the 2 conditions: res 1:5 ; sen 6:10
+table( abs(rowMeans(gseMXlg[,1:5])-rowMeans(gseMXlg[,6:10])) > 4.0)
+```
+
+```{text eval=FALSE}
+FALSE  TRUE 
+16755   194 
+```
+
+```{r eval=FALSE}
+table( abs(rowMeans(gseMXlg[,1:5])-rowMeans(gseMXlg[,6:10])) > 5.0)
+```
+
+```{text eval=FALSE}
+FALSE  TRUE 
+16876    73 
+```
+
+```{r eval=FALSE}
+gseMXtopV <- gseMXlg[abs(rowMeans(gseMXlg[,1:5])-rowMeans(gseMXlg[,6:10]))>5.0,]
+dim(gseMXlg)
+```
+
+```{text eval=FALSE}
+[1] 16949    10
+```
+
+```{r eval = FALSE}
+dim(gseMXtopV)
+```
+
+```{text eval=FALSE}
+[1] 73 10
+```
+
+```{r eval=FALSE}
+# HEATMAP with the GENES that showed the highest variability between the 2 conditions:
+par(oma=c(2,.5,.5,.5)) # all sides have X lines of space (bottom, left, top, right)) 
+#
+hmap(set = gseMXtopV,
+     scale = 'row',
+     tset = t(gseMXtopV),
+     col = col,
+     colsidecolors = colbars1,
+     hcexRow = .5,
+     hcexCol = 1,
+     clustering = T,
+     main = "Heatmap raw")
+# 
+# The next HEATMAPs were also built with "hmap" with different data matrices: 
+### selecting just the first 100 genes NUT this does not give a sensible PLOT
+# hmap(set = log2(gseMX_final[1:100,]+1),
+#      scale = 'row',
+#      tset = t(log2(gseMX_final[1:100,]+1)),
+#      col = col,
+#      colsidecolors = colbars1,
+#      hcexRow = .5,
+#      hcexCol = 1,
+#      clustering = T,
+#      main = "Heatmap raw")
+### using ALL GENES 
+# hmap(set = log2(assay(gse_final)+1),
+#      scale = 'row',
+#      tset = t(log2(assay(gse_final)+1)),
+#      col = col,
+#      colsidecolors = colbars1,
+#      hcexRow = .5,
+#      hcexCol = 1,
+#      clustering = T,
+#      main = "Heatmap raw")
+```
+
+![](assets/hmap3.png){height="400"} ![](assets/hmap2.png){height="400"}
+![](assets/hmap1.png){height="400"}
+
+We check the total number of counts per sample, and more or less they
+are somewhat in the same range.
+
+```{r eval=FALSE}
+apply(gseMX_final,2,sum)
+#Using "assay"# apply(assay(gse_final),2,sum)
+```
+
+```{text eval=FALSE}
+resCRCc92 resCRCc93 resCRCc94 resCRCc95 resCRCc96 senCRCc98 senCRCc99 
+ 10650326  14064877  12059045   8086648  10934933  18287105  13448160 
+senCRCc00 senCRCc01 senCRCc30 
+  8804101  18974802  14987230 
+```
+
+The data is not so bad, but we should try to normalize it to make it
+more comparable. We will perform quantile normalization.
+
+### Install preprocessCore
+
+```{r eval=FALSE}
+pacman::p_load("preprocessCore")
+set.seed(261)
+normalized_reads <- normalize.quantiles(gseMX_final)
+colnames(normalized_reads) <- colnames(gseMX_final)
+rownames(normalized_reads) <- rownames(gseMX_final)
+apply(normalized_reads,2,sum)
+#ALSO#
+#Using "assay"# normalized_reads <- normalize.quantiles(assay(gse_final))
+#Using "assay"# colnames(normalized_reads) <- colnames(assay(gse_final))
+#Using "assay"# rownames(normalized_reads) <- rownames(assay(gse_final))
+```
+
+```{text eval=FALSE}
+resCRCc92 resCRCc93 resCRCc94 resCRCc95 resCRCc96 senCRCc98 senCRCc99 
+ 13029594  13029665  13029450  13029359  13029594  13029664  13029690 
+senCRCc00 senCRCc01 senCRCc30 
+ 13029717  13029725  13029596 
+```
+
+And we plot the DISTRIBUTIONS (boxplots) of the data to check if the
+normalization has been done.
+
+```{r eval=FALSE}
+par(oma=c(3,.5,.5,.5)) # all sides have 3 lines of space (bottom, left, top, right)) 
+boxplot(log2(normalized_reads+1), las = 2, col = c(rep("#DC3220",5), rep("#005AB5",5)))
+```
+
+![](assets/bplot_norm.png){height="400"}
+
+And we plot also the DENSITIES (density plots) and a PAIR COMPARISON
+(scatter plot) of the data after the normalization.
+
+```{r eval=FALSE}
+# density plots
+par(oma=c(3,.5,.5,.5)) # all sides have 3 lines of space (bottom, left, top, right)) 
+dens <- apply(log2(normalized_reads+1), 2, density)
+#
+plot("DATA DENSITY 1", xlim=range(sapply(dens, "[", "x")), ylim=range(sapply(dens, "[", "y")))
+mapply(lines, dens, col=1:length(dens))
+legend("topright", legend=names(dens), fill=1:length(dens))
+#
+library("RColorBrewer")
+display.brewer.pal(n = 10, name = 'RdBu')
+###  col=brewer.pal(n = 10, name = "RdBu")
+#
+plot("DATA DENSITY 2", xlim=range(sapply(dens, "[", "x")), ylim=range(sapply(dens, "[", "y")))
+mapply(lines, dens, col=brewer.pal(n = 10, name = "RdBu"))
+legend("topright", legend=names(dens), fill=brewer.pal(n = 10, name = "RdBu"))
+
+# scatter plot
+par(oma=c(3,0.5,0.5,0.5))
+par(mar=c(5,4,2,2) +0.1)
+plot(log2(normalized_reads+1)[,1] , log2(normalized_reads+1)[,6] , 
+     main="Comparison resistant_1 vs sensitive_6",
+     xlab="log2(normReads+1)_sample_6", 
+     ylab="log2(normReads+1)_sample_1" , col="red")
+points(log2(normalized_reads+1)[,1] , log2(normalized_reads+1)[,2] , col="black")
+lines(log2(normalized_reads+1)[,1] , log2(normalized_reads+1)[,1] , col="blue")
+
+# MA plot
+# An MA-plot could also be represented, see: https://en.wikipedia.org/wiki/MA_plot 
+# Plot M=Log2-FoldChange(Ratio) versus A=Log2-Concentration(AverageSignal), M versus A
+# scatter plot of log2 fold changes (M, on y-axis) versus 
+#.                the average expression signal (A, on x-axis)
+# M = log2(x/y) and A = (log2(x)+log2(y))/2 = log2(xy)*1/2
+# See: https://www.sciencedirect.com/topics/biochemistry-genetics-and-molecular-biology/ma-plot
+# See: https://rpkgs.datanovia.com/ggpubr/reference/ggmaplot.html
+```
+
+![](assets/d1.png){height="400"} ![](assets/d2.png){height="400"}
+![](assets/d3.png){width="600" height="400"}
+
+We can also plot a heatmap to check how is it
+
+```{r eval=FALSE}
+# As above it is better to select GENES with highest variability 
+# between the 2 conditions: res 1:5 ; sen 6:10
+summary(rowSds(log2(normalized_reads+1)))
+```
+
+```{text eval=FALSE}
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+ 0.1023  0.5545  0.8175  1.0608  1.3417  5.2158 
+```
+
+```{r eval=FALSE}
+gseMXnm <- log2(normalized_reads[,]+1)
+dim(gseMXnm)
+```
+
+```{text eval=FALSE}
+[1] 16949    10
+```
+
+```{r eval=FALSE}
+table( abs(rowMeans(gseMXnm[,1:5])-rowMeans(gseMXnm[,6:10])) > 5.0)
+```
+
+```{text eval=FALSE}
+FALSE  TRUE 
+16904    45 
+```
+
+```{r eval=FALSE}
+gseMXtopVn <- gseMXlg[abs(rowMeans(gseMXnm[,1:5])-rowMeans(gseMXnm[,6:10]))>5.0,]
+
+par(oma=c(3,.5,.5,.5)) # all sides have 3 lines of space (bottom, left, top, right)) 
+#
+hmap(set = gseMXtopVn,
+     scale = 'row',
+     tset = t(gseMXtopVn),
+     col = col,
+     colsidecolors = colbars1,
+     hcexRow = .5,
+     hcexCol = 1,
+     clustering = T,
+     main = "Heatmap after normalization")
+#
+#ALSO# using ALL GENES (i.e. the whole gene set of 16904g) 
+# hmap(set = normalized_reads,
+#      scale = 'row',
+#      tset = t(normalized_reads),
+#      col = col,
+#      colsidecolors = colbars1,
+#      hcexRow = .5,
+#      hcexCol = 1,
+#      clustering = T,
+#      main = "Heatmap after normalization")
+```
+
+![](assets/hmap11.png){height="400"}
+
+![](assets/hmap21.png){height="400"}
+
+![](assets/hmap31.png){height="400"}
+
+After this we can perform differential expression. The first step is to
+create a DGEList object.
+
+```{r eval=FALSE}
+pacman::p_load("edgeR")
+# load("datafiles4de.Rdata")
+d0 <- DGEList(normalized_reads)
+d0
+```
+
+```{text eval=FALSE}
+An object of class "DGEList"
+$counts
+                   resCRCc92 resCRCc93 resCRCc94 resCRCc95 resCRCc96
+ENSG00000000003.15    357.80    274.40     548.9    288.35    578.45
+ENSG00000000419.14    530.60    499.75     509.0    372.85    361.90
+ENSG00000000457.14    224.80    219.90     123.2     78.00    152.30
+ENSG00000000460.17    264.40    101.80     215.3    312.20    197.20
+ENSG00000001036.14    640.65    588.80     929.9    869.95    891.40
+                   senCRCc98 senCRCc99 senCRCc00 senCRCc01 senCRCc30
+ENSG00000000003.15    638.75     781.5     304.5     378.2     517.8
+ENSG00000000419.14   1168.40    1009.1     640.7     714.8     475.5
+ENSG00000000457.14    105.00     118.3      98.4     144.6     675.5
+ENSG00000000460.17    221.90     170.3     107.7     121.0     183.4
+ENSG00000001036.14    468.50     275.7     600.4    1102.4    1424.8
+16944 more rows ...
+
+$samples
+         group lib.size norm.factors
+resCRCc92     1 13029594            1
+resCRCc93     1 13029665            1
+resCRCc94     1 13029450            1
+resCRCc95     1 13029359            1
+resCRCc96     1 13029594            1
+senCRCc98     1 13029664            1
+senCRCc99     1 13029690            1
+senCRCc00     1 13029717            1
+senCRCc01     1 13029725            1
+senCRCc30     1 13029596            1
+```
+
+### Install edgeR
+
+First we calculate normalization factors. calcNormFactors doesn't
+normalize the data, it just calculates normalization factors for use
+downstream.
+
+```{r eval=FALSE}
+d0 <- calcNormFactors(d0)
+d0
+```
+
+```{text eval=FALSE}
+An object of class "DGEList"
+$counts
+                  resCRCc92 resCRCc93 resCRCc94 resCRCc95 resCRCc96 senCRCc98 senCRCc99 senCRCc00 senCRCc01 senCRCc30
+ENSG00000000003.15    357.80    274.40     548.9    288.35    578.45    638.75     781.5     304.5     378.2     517.8
+ENSG00000000419.14    530.60    499.75     509.0    372.85    361.90   1168.40    1009.1     640.7     714.8     475.5
+ENSG00000000457.14    224.80    219.90     123.2     78.00    152.30    105.00     118.3      98.4     144.6     675.5
+ENSG00000000460.17    264.40    101.80     215.3    312.20    197.20    221.90     170.3     107.7     121.0     183.4
+ENSG00000001036.14    640.65    588.80     929.9    869.95    891.40    468.50     275.7     600.4    1102.4    1424.8
+ 16944 more rows ...
+ 
+ $samples
+           group lib.size norm.factors
+resCRCc92     1 13029594    1.0212406
+resCRCc93     1 13029665    1.0227475
+resCRCc94     1 13029450    0.9477376
+resCRCc95     1 13029359    0.9684974
+resCRCc96     1 13029594    1.0070091
+senCRCc98     1 13029664    1.0605930
+senCRCc99     1 13029690    1.0490547
+senCRCc00     1 13029717    0.9245159
+senCRCc01     1 13029725    0.9677416
+senCRCc30     1 13029596    1.0405498
+```
+
+Next we will filter low expressed genes. 
+"Low-expressed" is subjective and depends on the dataset.
+
+```{r eval=FALSE}
+cutoff <- 1
+drop <- which(apply(cpm(d0), 1, max) < cutoff)
+d <- d0[-drop,] 
+dim(d) # number of genes left
+```
+
+```{text eval=FALSE}
+[1] 16841    10
+```
+
+We save our resistance data into a new variable
+
+```{r eval=FALSE}
+group <- SummarizedExperiment::colData(gse_final)[,"cetuximab_resistance"]
+group <- as.factor(group)
+group
+```
+
+```{text eval=FALSE}
+ [1] resistant resistant resistant resistant resistant sensitive sensitive
+ [8] sensitive sensitive sensitive
+Levels: resistant sensitive
+```
+
+Next we can check Multidimensional scaling (MDS) plot
+
+```{r eval=FALSE}
+plotMDS(d, col = as.numeric(group), labels=colnames(d))
+abline(h=0,col="grey")
+abline(v=0,col="grey")
+#
+plotMDS(d, col = as.numeric(group) , labels= c(rep("Res1",5), rep("Sen2",5)) )
+abline(h=0,col="grey")
+abline(v=0,col="grey")
+```
+
+![](assets/mds1.png){height="400"} ![](assets/mds2.png){height="400"}
+Next we will perform the voom transformation and the calculation of
+variance weigths. First, we specify the model to be fitted. We do this
+before using voom since voom uses variances of the model residuals
+(observed - fitted)
+
+```{r eval=FALSE}
+mm <- model.matrix(~0 + group)
+mm
+```
+
+```{text eval=FALSE}
+   groupresistant groupsensitive
+1               1              0
+2               1              0
+3               1              0
+4               1              0
+5               1              0
+6               0              1
+7               0              1
+8               0              1
+9               0              1
+10              0              1
+attr(,"assign")
+[1] 1 1
+attr(,"contrasts")
+attr(,"contrasts")$group
+[1] "contr.treatment"
+```
+
+The above specifies a model where each coefficient corresponds to a
+group mean.
+
+```{r eval=FALSE}
+y <- voom(d, mm, plot = T)
+# str(d)
+# Formal class 'DGEList' [package "edgeR"] with 1 slot
+# ...
+# str(y)
+# Formal class 'EList' [package "limma"] with 1 slot
+# ...
+```
+
+![](assets/voom.png){height="400"}
+
+What is voom doing?:
+
+Counts are transformed to log2 counts per million reads (CPM), where
+"per million reads" is defined based on the normalization factors we
+calculated earlier. A linear model is fitted to the log2 CPM for each
+gene, and the residuals are calculated. A smoothed curve is fitted to
+the sqrt(residual standard deviation) by average expression (see red
+line in plot above). The smoothed curve is used to obtain weights for
+each gene and sample that are passed into limma along with the log2
+CPMs.
+
+Transform RNA-Seq Data Ready for Linear Modelling - voom(limma)
+Description: Transform count data to log2-counts per million (logCPM),
+estimate the mean-variance relationship and use this to compute
+appropriate observation-level weights. The data are then ready for
+linear modelling. Usage: voom(counts, design = NULL, lib.size = NULL,
+normalize.method = "none", block=NULL, correlation=NULL, weights=NULL,
+span=0.5, plot=FALSE, save.plot=FALSE)
+
+More details at
+<https://genomebiology.biomedcentral.com/articles/10.1186/gb-2014-15-2-r29>
+
+The above is a "good" voom plot. If your voom plot looks like the below,
+you might want to filter more: ![](assets/badvoom.png){height="450"}
+
+The next step is fitting linear models in limma
+
+```{r eval=FALSE}
+fit <- lmFit(y, mm)
+head(coef(fit))
+```
+
+```{text eval=FALSE}
+                   groupresistant groupsensitive
+ENSG00000000003.15       4.912634       5.244523
+ENSG00000000419.14       5.117968       5.861404
+ENSG00000000457.14       3.534570       3.658691
+ENSG00000000460.17       3.980055       3.579782
+ENSG00000001036.14       5.896456       5.643019
+ENSG00000001084.13       5.522446       5.558454
+```
+
+Specify which groups to compare, in this case we only have two groups:
+
+```{r eval=FALSE}
+contr <- makeContrasts(groupresistant - groupsensitive, levels = colnames(coef(fit)))
+contr
+```
+
+```{text eval=FALSE}
+                Contrasts
+Levels           groupresistant - groupsensitive
+  groupresistant                               1
+  groupsensitive                              -1
+```
+
+Estimate contrast for each gene
+
+```{r eval=FALSE}
+tmp <- contrasts.fit(fit, contr)
+```
+
+Empirical Bayes smoothing of standard errors (shrinks standard errors
+that are much larger or smaller than those from other genes towards the
+average standard error) (see
+<https://www.degruyter.com/doi/10.2202/1544-6115.1027>)
+
+```{r eval=FALSE}
+tmp <- eBayes(tmp)
+```
+
+### Calculate genes differential expression
+
+What genes are most differentially expressed?
+
+```{r eval=FALSE}
+top.table <- topTable(tmp, sort.by = "P", n = Inf)
+head(top.table, 12)
+```
+
+```{text eval=FALSE}
+                      logFC    AveExpr          t      P.Value   adj.P.Val        B
+ENSG00000203326.12 -5.326225  1.3613344 -10.420240 3.353797e-07 0.004806267 5.239035
+ENSG00000152454.4  -6.981008 -0.5013794  -9.902006 5.707817e-07 0.004806267 3.769613
+ENSG00000101350.8  -1.912930  5.4157087  -7.967949 5.158249e-06 0.022663509 4.522696
+ENSG00000126016.17 -3.104801  1.8910262  -7.616063 8.028315e-06 0.022663509 3.662323
+ENSG00000167969.13  1.421662  6.1516331   7.454415 9.884862e-06 0.022663509 3.879928
+ENSG00000284820.1   2.612561  3.2486898   7.453225 9.900133e-06 0.022663509 3.778867
+ENSG00000120708.17 -3.215962  6.4754734  -7.409695 1.047618e-05 0.022663509 3.826789
+ENSG00000257743.8  -6.661798  1.3545749  -7.315782 1.184490e-05 0.022663509 2.751184
+ENSG00000235369.1  -5.716545 -1.1380723  -7.298839 1.211161e-05 0.022663509 2.100126
+ENSG00000164120.14  5.880574 -0.6102387   7.180184 1.416943e-05 0.023599080 2.066891
+ENSG00000148426.13 -7.908004  0.5007634  -7.074403 1.632093e-05 0.023599080 2.121491
+ENSG00000274419.6  -6.480710 -0.7546451  -7.048084 1.690884e-05 0.023599080 1.978881
+```
+
+    logFC: log2 fold change of resistant/sensitive
+    AveExpr: Average expression across all samples, in log2 CPM
+    t: logFC divided by its standard error
+    P.Value: Raw p-value (based on t) from test that logFC differs from 0
+    adj.P.Val: Benjamini-Hochberg false discovery rate adjusted p-value
+    B: log-odds that gene is DE (arguably less useful than the other columns)
+
+ENSG00000203326 gene will be more expressed in sensitive samples because
+the logFC is negative. ENSG00000284820 gene will be more expressed in
+resistant samples.
+
+How many DE genes are there?
+
+```{r eval=FALSE}
+length(which(top.table$adj.P.Val < 0.05))
+```
+
+```{text eval=FALSE}
+[1] 74
+```
+
+Let us now plot 2 GENES in both conditions, each with the highest pvalue
+
+```{r eval=FALSE}
+# We need to have installed & charged in R this packages 
+pacman::p_load(ggplot2, tidyverse, ggpubr)
+pacman::p_load(reshape2)
+#
+rownames(normalized_reads) <- gsub("\\..*", "", rownames(normalized_reads))
+head(normalized_reads, 5)
+```
+
+```{text eval=FALSE}
+                resCRCc92 resCRCc93 resCRCc94 resCRCc95 resCRCc96
+ENSG00000000003    357.80    274.40     548.9    288.35    578.45
+ENSG00000000419    530.60    499.75     509.0    372.85    361.90
+ENSG00000000457    224.80    219.90     123.2     78.00    152.30
+ENSG00000000460    264.40    101.80     215.3    312.20    197.20
+ENSG00000001036    640.65    588.80     929.9    869.95    891.40
+                senCRCc98 senCRCc99 senCRCc00 senCRCc01 senCRCc30
+ENSG00000000003    638.75     781.5     304.5     378.2     517.8
+ENSG00000000419   1168.40    1009.1     640.7     714.8     475.5
+ENSG00000000457    105.00     118.3      98.4     144.6     675.5
+ENSG00000000460    221.90     170.3     107.7     121.0     183.4
+ENSG00000001036    468.50     275.7     600.4    1102.4    1424.8
+```
+
+```{r eval=FALSE}
+data_to_plot <- normalized_reads[rownames(normalized_reads) %in% 
+                        c("ENSG00000152454", "ENSG00000164120"),] %>% reshape2::melt()
+data_to_plot$group <- c(rep("resistant", 10), rep("sensitive", 10))
+colnames(data_to_plot) <- c("gene", "sample", "value", "group")
+data_to_plot
+```
+
+```{text eval=FALSE}
+              gene    sample  value     group
+1  ENSG00000152454 resCRCc92   0.10 resistant
+2  ENSG00000164120 resCRCc92  31.40 resistant
+3  ENSG00000152454 resCRCc93   0.00 resistant
+4  ENSG00000164120 resCRCc93  71.40 resistant
+5  ENSG00000152454 resCRCc94   0.30 resistant
+6  ENSG00000164120 resCRCc94 137.20 resistant
+7  ENSG00000152454 resCRCc95   1.00 resistant
+8  ENSG00000164120 resCRCc95  63.90 resistant
+9  ENSG00000152454 resCRCc96   0.50 resistant
+10 ENSG00000164120 resCRCc96  57.70 resistant
+11 ENSG00000152454 senCRCc98 187.70 sensitive
+12 ENSG00000164120 senCRCc98   1.20 sensitive
+13 ENSG00000152454 senCRCc99 112.40 sensitive
+14 ENSG00000164120 senCRCc99   1.20 sensitive
+15 ENSG00000152454 senCRCc00  94.55 sensitive
+16 ENSG00000164120 senCRCc00   1.00 sensitive
+17 ENSG00000152454 senCRCc01  68.00 sensitive
+18 ENSG00000164120 senCRCc01   0.30 sensitive
+19 ENSG00000152454 senCRCc30  87.15 sensitive
+20 ENSG00000164120 senCRCc30   0.00 sensitive
+```
+
+```{r eval=FALSE}
+# Plot 2 top genes: ENSG00000152454 = ZNF256 and ENSG00000164120 = HPGD
+ggplot() +
+  geom_tile(data = data_to_plot, aes(x = sample, y = -1, height = .5, fill = group)) +
+  scale_fill_manual(values = c("black", "grey")) +
+  geom_line(data = data_to_plot %>% filter(gene %in% "ENSG00000152454"),
+            aes(x = sample, y = log2(value+1), group = group, color = gene)) +
+  geom_line(data = data_to_plot %>% filter(gene %in% "ENSG00000164120"),
+            aes(x = sample, y = log2(value+1), group = group, color = gene)) +
+  
+  geom_point(data=data_to_plot, aes(x=sample, y=log2(value+1), group=group, color=gene)) +
+  # Labels added
+  xlab("") +
+  ylab("Normalized Reads log2(expr+1)") +
+  # Adding the title
+  labs(title = "Signal of 2 GENES diff. express. in Resistant v Sensitive") +
+  # Setting the theme to minimal so it can be customized to the desired style
+  theme_minimal(base_size = 9) +
+  theme(text             = element_text(size = 10),
+        panel.background = element_rect(fill = 'white'),
+        panel.grid.major = element_line(colour = "grey", size = .2),
+        panel.grid.minor = element_line(colour = "grey", size = .2),
+        legend.position  = 'bottom',
+        legend.text      = element_text(size = 8),
+        legend.title     = element_text(size = 10),
+        plot.title       = element_text(size = 14, face = "bold"),
+        plot.subtitle    = element_text(size = 12, face = "italic", color = "black"),
+        axis.text.x      = element_text(angle = 90),
+        axis.title.y     = element_text(size = 12, margin = margin(t = 0, r = 20, b = 0, l = 0)),
+        axis.title.x     = element_text(size = 12, margin = margin(t = 20, r = 0, b = 0, l = 0)))
+```
+
+![](assets/df_genes.png){height="400"}
+
+Write top.table to a file
+
+```{r eval=FALSE}
+top.table$Gene <- rownames(top.table)
+top.table <- top.table[,c("Gene", names(top.table)[1:6])]
+write.table(top.table, file = "output/resistant_v_sensitive_gene_expr.txt", 
+            row.names = F, sep = "\t", quote = F)
+```
+
+Write top.table to a file but now adding GENEs INFORMATION
+
+```{r eval=FALSE}
+# Adding gene information with biomart
+pacman::p_load(biomaRt)
+mart.hs <- useMart("ensembl", "hsapiens_gene_ensembl", host = "https://www.ensembl.org")
+View(listAttributes(mart.hs))
+
+# The query we are going to search are the ENSG without the .xx
+query1 <- top.table$Gene
+query1 <- gsub("\\..*", "", top.table$Gene)
+#
+query_res <- getBM(attributes = c('ensembl_gene_id', 'hgnc_symbol', 'description'), 
+                   filters = 'ensembl_gene_id', values = query1, mart = mart.hs)
+#
+top.table$ensg         <- query1
+top.table$symbol       <- query_res$hgnc_symbol[match(top.table$ensg, query_res$ensembl_gene_id)]
+top.table$descripction <- query_res$description[match(top.table$ensg, query_res$ensembl_gene_id)]
+
+top.tableF <- top.table[,c(8,9,2:7,10)]
+rownames(top.tableF) <- top.tableF$ensg
+#
+write.table(top.tableF, file = "output/resistant_v_sensitive_gene_exprINFO.txt", 
+            row.names = F, sep = "\t", quote = F)
+head(top.tableF, 7)
+```
+
+```{text eval=FALSE}
+                                 Gene     logFC    AveExpr          t      P.Value   adj.P.Val        B            ensg symbol
+ENSG00000203326.12 ENSG00000203326.12 -5.326225  1.3613344 -10.420240 3.353797e-07 0.004806267 5.239035 ENSG00000203326 ZNF525
+ENSG00000152454.4   ENSG00000152454.4 -6.981008 -0.5013794  -9.902006 5.707817e-07 0.004806267 3.769613 ENSG00000152454 ZNF256
+ENSG00000101350.8   ENSG00000101350.8 -1.912930  5.4157087  -7.967949 5.158249e-06 0.022663509 4.522696 ENSG00000101350  KIF3B
+ENSG00000126016.17 ENSG00000126016.17 -3.104801  1.8910262  -7.616063 8.028315e-06 0.022663509 3.662323 ENSG00000126016   AMOT
+ENSG00000167969.13 ENSG00000167969.13  1.421662  6.1516331   7.454415 9.884862e-06 0.022663509 3.879928 ENSG00000167969   ECI1
+ENSG00000284820.1   ENSG00000284820.1  2.612561  3.2486898   7.453225 9.900133e-06 0.022663509 3.778867 ENSG00000284820
+ENSG00000120708.17 ENSG00000120708.17 -3.215962  6.4754734  -7.409695 1.047618e-05 0.022663509 3.826789 ENSG00000120708  TGFBI
+                                                                                  descripction
+ENSG00000203326.12                 zinc finger protein 525 [Source:HGNC Symbol;Acc:HGNC:29423]
+ENSG00000152454.4                  zinc finger protein 256 [Source:HGNC Symbol;Acc:HGNC:13049]
+ENSG00000101350.8                  kinesin family member 3B [Source:HGNC Symbol;Acc:HGNC:6320]
+ENSG00000126016.17                              angiomotin [Source:HGNC Symbol;Acc:HGNC:17810]
+ENSG00000167969.13              enoyl-CoA delta isomerase 1 [Source:HGNC Symbol;Acc:HGNC:2703]
+ENSG00000284820.1                                                                novel protein
+ENSG00000120708.17 transforming growth factor beta induced [Source:HGNC Symbol;Acc:HGNC:11771]
+```
+
+Plot a volcano plot of the results
+
+```{r eval=FALSE}
+# Use tmp[12312,] to see the values of the genes plotted
+volcanoplot(tmp, 
+            coef = 1, 
+            style = "p-value", 
+            highlight = 74,  # We hightlight the 74 significant genes 
+            names = seq(1, nrow(tmp$coefficients)),
+            hl.col = "red",
+            xlab = "Log2 Fold Change", 
+            ylab = NULL, 
+            pch = 16, 
+            cex = 0.35)
+#
+abline(h=0,col="grey")
+abline(v=0,col="grey")
+###  -log10(0.05)
+# [1] 1.30103
+###  abline(h=1.30103,col="red")
+###  -log10(0.000233)
+# [1] 3.632644
+abline(h=3.632644,col="red")
+```
+
+![](assets/volcano_plot.png){height="400"}
+
+And a heatmap of the significant genes
+
+```{r eval=FALSE}
+significant_genes <- top.table$Gene[top.table$adj.P.Val < 0.05]
+significant_genes<- gsub("\\..*", "", significant_genes)
+
+signifcant_normalized_reads <- normalized_reads[rownames(normalized_reads) %in% 
+                                                  significant_genes,]
+dim(signifcant_normalized_reads)
+```
+
+```{text eval=FALSE}
+[1] 74 10
+```
+
+```{r eval=FALSE}
+# source('hmap.R')
+# pacman::p_load(RColorBrewer, gplots, dendextend)
+# col <- brewer.pal(11,"RdBu")
+# col <- rev(col)
+# colbars1 <- c(rep("#005AB5" ,5), rep("#DC3220",5))
+#
+hmap(set = signifcant_normalized_reads,
+     scale = 'row',
+     tset = t(signifcant_normalized_reads),
+     col = col,
+     colsidecolors = colbars1,
+     hcexRow = .5,
+     hcexCol = .8,
+     clustering = T,
+     main = "Heatmap 74 DEgenes - Resistant_v_Sensitive")
+```
+
+![](assets/hmapf1.png){height="400"}
+![](assets/hmapf2.png){height="400"} ![](assets/hmapf.png){height="400"}
+
+```{r eval=FALSE}
+sessionInfo()
+```
+
+```{text}
+R version 4.2.1 (2022-06-23)
+Platform: x86_64-pc-linux-gnu (64-bit)
+Running under: Ubuntu 20.04.5 LTS
+
+Matrix products: default
+BLAS:   /usr/lib/x86_64-linux-gnu/blas/libblas.so.3.9.0
+LAPACK: /usr/lib/x86_64-linux-gnu/lapack/liblapack.so.3.9.0
+
+locale:
+ [1] LC_CTYPE=es_ES.UTF-8       LC_NUMERIC=C              
+ [3] LC_TIME=es_ES.UTF-8        LC_COLLATE=es_ES.UTF-8    
+ [5] LC_MONETARY=es_ES.UTF-8    LC_MESSAGES=es_ES.UTF-8   
+ [7] LC_PAPER=es_ES.UTF-8       LC_NAME=C                 
+ [9] LC_ADDRESS=C               LC_TELEPHONE=C            
+[11] LC_MEASUREMENT=es_ES.UTF-8 LC_IDENTIFICATION=C       
+
+attached base packages:
+[1] stats4    stats     graphics  grDevices utils     datasets  methods  
+[8] base     
+
+other attached packages:
+ [1] biomaRt_2.52.0              SummarizedExperiment_1.26.1
+ [3] Biobase_2.56.0              GenomicRanges_1.48.0       
+ [5] GenomeInfoDb_1.32.4         IRanges_2.30.1             
+ [7] MatrixGenerics_1.8.1        matrixStats_0.62.0         
+ [9] edgeR_3.38.4                limma_3.52.4               
+[11] S4Vectors_0.34.0            BiocGenerics_0.42.0        
+
+loaded via a namespace (and not attached):
+ [1] Rcpp_1.0.9             locfit_1.5-9.6         lattice_0.20-45       
+ [4] prettyunits_1.1.1      png_0.1-7              Biostrings_2.64.1     
+ [7] assertthat_0.2.1       digest_0.6.30          utf8_1.2.2            
+[10] BiocFileCache_2.4.0    R6_2.5.1               evaluate_0.17         
+[13] RSQLite_2.2.18         httr_1.4.4             ggplot2_3.3.6         
+[16] pillar_1.8.1           zlibbioc_1.42.0        rlang_1.0.6           
+[19] progress_1.2.2         curl_4.3.3             rstudioapi_0.14       
+[22] blob_1.2.3             Matrix_1.5-1           rmarkdown_2.17        
+[25] stringr_1.4.1          RCurl_1.98-1.9         bit_4.0.4             
+[28] munsell_0.5.0          DelayedArray_0.22.0    xfun_0.34             
+[31] compiler_4.2.1         pkgconfig_2.0.3        htmltools_0.5.3       
+[34] tidyselect_1.2.0       KEGGREST_1.36.3        tibble_3.1.8          
+[37] GenomeInfoDbData_1.2.8 XML_3.99-0.11          fansi_1.0.3           
+[40] crayon_1.5.2           dplyr_1.0.10           dbplyr_2.2.1          
+[43] rappdirs_0.3.3         bitops_1.0-7           grid_4.2.1            
+[46] gtable_0.3.1           lifecycle_1.0.3        DBI_1.1.3             
+[49] magrittr_2.0.3         scales_1.2.1           cli_3.4.1             
+[52] stringi_1.7.8          cachem_1.0.6           XVector_0.36.0        
+[55] xml2_1.3.3             filelock_1.0.2         ellipsis_0.3.2        
+[58] generics_0.1.3         vctrs_0.4.2            tools_4.2.1           
+[61] bit64_4.0.5            glue_1.6.2             hms_1.1.2             
+[64] rsconnect_0.8.27       yaml_2.3.6             fastmap_1.1.0         
+[67] AnnotationDbi_1.58.0   colorspace_2.0-3       memoise_2.0.1         
+[70] knitr_1.40 
+```
+

@@ -1,0 +1,1807 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+%
+\documentclass[
+]{article}
+\usepackage{amsmath,amssymb}
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math} % this also loads fontspec
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+\usepackage{lmodern}
+\ifPDFTeX\else
+  % xetex/luatex font selection
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\usepackage[margin=1in]{geometry}
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\usepackage{framed}
+\definecolor{shadecolor}{RGB}{248,248,248}
+\newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.94,0.16,0.16}{#1}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\BuiltInTok}[1]{#1}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.64,0.00,0.00}{\textbf{#1}}}
+\newcommand{\ExtensionTok}[1]{#1}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\ImportTok}[1]{#1}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\NormalTok}[1]{#1}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\usepackage{graphicx}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+% Set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+\ifLuaTeX
+  \usepackage{selnolig}  % disable illegal ligatures
+\fi
+\usepackage{bookmark}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\urlstyle{same}
+\hypersetup{
+  pdftitle={RNA-seq Data Analysis Workflow},
+  pdfauthor={by Alberto Berral, Natalia Alonso \& Javier De Las Rivas (CiC-IBMCC, CSIC/USAL)},
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+
+\title{RNA-seq Data Analysis Workflow}
+\author{by Alberto Berral, Natalia Alonso \& Javier De Las Rivas
+(CiC-IBMCC, CSIC/USAL)}
+\date{Updated 01.Jun.2024}
+
+\begin{document}
+\maketitle
+
+\subsubsection{Bulk RNA-seq analyses: based on ``fastq2counts'' pipeline
+(from raw fastq data to gene expression
+calculation)}\label{bulk-rna-seq-analyses-based-on-fastq2counts-pipeline-from-raw-fastq-data-to-gene-expression-calculation}
+
+\subsection{Abstract:}\label{abstract}
+
+This pipeline aims to provide a quick and easy way to prepare an RNA-seq
+raw-counts matrix from \textbf{fastq} files together with the related
+experiment information, being each part of the process explained step by
+step. In addition, we will do all the steps with an example: a sample
+set of 10 samples from \textbf{GSE162104}, that includes RNA-seq of
+primary colorectal cancer cell lines (60 samples), done with Illumina
+HiSeq 4000 (Homo sapiens):
+\textless{}\textbf{\url{https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE162104}}\textgreater{}
+
+\subsection{Introduction:}\label{introduction}
+
+When working with differential expression statistical methods such as
+DESeq2, Limma voom, edgeR, baySeq, etc., it is necessary to start from
+non-normalized data to perform the corresponding analysis because these
+algorithms already have inside methods of normalization and data
+scaling. Usually, the data offered in different repositories, such as
+NCBI, is normalized. However, it is possible to download the RNA-seq
+data of each sample in \textbf{fastq} format individually. Thus below
+are the necessary steps to arrive at the final \textbf{counts matrix}.
+
+\subsection{Methods \& Packages
+Required:}\label{methods-packages-required}
+
+\begin{itemize}
+\tightlist
+\item
+  Sra-toolkit v(2.10.7+dfsg-1)
+\item
+  Fastqc v(0.11.9)
+\item
+  Trimmomatic v(0.39)
+\item
+  Salmon v(1.3.0)
+\item
+  R \& RStudio v(4.3.1) \% v(2023.09.1+494)
+\end{itemize}
+
+\subsection{Data download:}\label{data-download}
+
+There are different repositories where you can find datasets or projects
+to analyze. In this pipeline, we will use NCBI
+(\href{https://www.ncbi.nlm.nih.gov/geo/browse/?view=series}{\textbf{https://www.ncbi.nlm.nih.gov/geo/browse/?view=series}}).
+Once you have chosen the project, you have to locate the `RUN code' of
+each of the samples we want to download, these codes can be accessed
+using the tool SRA RUN SELECTOR TOOL. In this example we will use
+\textbf{GSE162104}.
+
+\includegraphics[width=6.83333in,height=\textheight]{assets/1.png}
+
+\includegraphics[width=\textwidth,height=5.20833in]{assets/2.png}
+
+Once the desired samples have been selected, we will download the
+`\textbf{Accession List}' to indicate to the algorithm the files you
+want to work with. We will download these 10 files: SRR13127892,
+SRR13127893, SRR13127894, SRR13127895, SRR13127896, SRR13127898,
+SRR13127899, SRR13127900, SRR13127901, SRR13127930
+
+It is important to check if the samples of the chosen project are
+\textbf{single-end} or \textbf{paired-end} RNA-Seq. We can do this by
+checking the SRA information in the Library Layout section.
+
+\includegraphics[width=\textwidth,height=2.60417in]{assets/3.png}
+
+As we can see, in this case we have a single layout. So we will use the
+single type bash scripts.
+
+\subsection{Terminal (UBUNTU or other LINUX
+Terminal)}\label{terminal-ubuntu-or-other-linux-terminal}
+
+\subsubsection{Download data:}\label{download-data}
+
+Note: Before starting with the download script, it is necessary to
+create a directory where we will store all of the files (the bash
+scripts, samples, etc.). The \textbf{Accession List} mentioned above
+should also be saved in this directory. The data download function to
+save as \textbf{download\_data.sh}.
+
+To run this script, a terminal should be opened from the directory
+mentioned above and type the following command:
+
+\textbf{bash download\_data.sh SRR\_Acc\_List.txt}
+
+After running the script and if everything went smoothly we should have
+something like this:
+
+\includegraphics[width=6.95833in,height=\textheight]{assets/4.png}
+
+**: If openssl certificate error update sra toolkit.
+
+\textbf{Inside the} samples\_sra folder** are the .sra files we have
+downloaded. Inside the \textbf{fastq\_files folder} are the same files
+but converted to fastq file format, which is the one we are going to
+use.
+
+\subsubsection{Quality Check:}\label{quality-check}
+
+Once we have the \textbf{fastq} files, it is necessary to check their
+quality. The quality of each of the samples can be analyzed using the
+\textbf{fastqc} tool. Additionally, with the \textbf{trimmomatic} tool,
+we can trim those that do not meet the quality requirements. The bash
+script with the quality control functions is
+\textbf{quality\_control\_\#\#\#\#.sh}:
+
+To run this script a terminal should be opened from the directory
+mentioned above and type the following command depending on the type of
+data we have (single end or paired end):
+
+\textbf{bash quality\_control\_single-end.sh SRR\_Acc\_List.txt}
+
+After running the script we should have a new folder,
+\textbf{Quality\_html}:
+
+\includegraphics[width=\textwidth,height=1.5625in]{assets/7.png}
+
+Depending on which experiment we are analyzing, it will be necessary to
+look at some parameters or others. For example, if the objective is to
+analyze the differential expression in samples referring to a type of
+cancer, the sections `Per base sequence quality' and `Per sequence
+quality scores' would be significant, while others like' Sequence
+Duplication Levels' would not have as much relevance.
+
+\includegraphics[width=\textwidth,height=4.6875in]{assets/5.png}
+
+If we have a lot of samples, we could run the script
+\textbf{fastqc\_eval.py} using Python3:
+
+\textbf{python3 fastqc\_eval.py}
+
+As output we will have \textbf{fastqc\_summary\_output.csv}, a table
+with each sample on the rows, and the quality parameters as columns.
+Using Excel or another software, we can color the cells using
+conditional format to check big sample sizes.
+
+\includegraphics[width=\textwidth,height=1.5625in]{assets/6.png}
+
+Once we have verified the quality of the samples, if all are valid, we
+would proceed with the alignment. On the contrary, it would be necessary
+to trim those bad-quality samples. You need to create a .txt with the
+names of the samples to be trimmed separated in the same way as in the
+\textbf{Accession List file}, the bash script with the functions for
+trimming the samples to be saved as \textbf{trimmomatic\_single-end.sh}.
+
+You can find the number of bp in the fastqc reports generated in the
+previous section, \textbf{`Sequence Length Distribution'}, where the
+number of bp is the value on the x-axis with the highest value on the
+y-axis. In this example, the argument for introducing in MINLEN would be
+MINLEN: 26 since (51/2) + 1 = 26.
+
+\includegraphics[width=6.95833in,height=4in]{assets/99.png}
+
+It is necessary to have previously the \textbf{list of illumina
+adapters}: open a txt file and save it in the directory such as
+Illumina\_Adapters\_SE.fa:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{\textgreater{}TruSeq2\_SE}
+\NormalTok{AGATCGGAAGAGCTCGTATGCCGTCTTCTGCTTG}
+\NormalTok{\textgreater{}TruSeq2\_PE\_f}
+\NormalTok{AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGT}
+\NormalTok{\textgreater{}TruSeq2\_PE\_r}
+\NormalTok{AGATCGGAAGAGCGGTTCAGCAGGAATGCCGAG}
+\NormalTok{\textgreater{}TruSeq3\_IndexedAdapter}
+\NormalTok{AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC}
+\NormalTok{\textgreater{}TruSeq3\_UniversalAdapter}
+\NormalTok{AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGTA}
+\end{Highlighting}
+\end{Shaded}
+
+To run this script a terminal should be opened from the directory
+mentioned above and type the following command:
+
+\textbf{bash trimmomatic\_single-end.sh SRR\_Acc\_List\_totrim.txt}
+
+In case we wanted all SRR files to be trimmed we could use the
+SRR\_Acc\_List.txt file.
+
+We can run again the quality control commando to check that the trimming
+is good. We need to run:
+
+\textbf{bash quality\_control\_single-end.sh SRR\_Acc\_List.txt} and
+then \textbf{python3 fastqc\_eval.py}
+
+\subsubsection{Alignment and
+quantification:}\label{alignment-and-quantification}
+
+To carry out this process, the \textbf{Salmon} tool will be used. The
+first step is to create a reference index. The bash file we run is:
+
+\textbf{bash salmon\_index.sh}.
+
+\begin{itemize}
+\tightlist
+\item
+  In case of error, curl might need to be installed.
+\end{itemize}
+
+Inside the \textbf{gencode} folder is the gencode.vXX.transcripts.fa.gz
+file, that can be also downloaded from
+\url{https://www.gencodegenes.org/human/} for another version. Once the
+index is generated, we proceed to the make the alignment with the script
+\textbf{salmon\_alignment.sh}. Open a terminal in the working directory
+and run:
+
+\textbf{bash salmon\_alignment.sh SRR\_Acc\_List.txt}.
+
+After we run everything our folder should looks like this:
+
+\includegraphics[width=\textwidth,height=4.16667in]{assets/8.png}
+
+\section{R \& Rstudio}\label{r-rstudio}
+
+\subsubsection{Reading data in R:}\label{reading-data-in-r}
+
+INSTALL the following PACKAGES using `pacman': \textbf{tximeta},
+\textbf{SummarizedExperiment}, \textbf{tidyverse}, \textbf{ggplot2}
+\ldots{} or \ldots{} better INSTALL the PACKAGES from Bioconductor
+(installing all the OR from R-cran one by one:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Basic R{-}project layout}
+\FunctionTok{ifelse}\NormalTok{(}\FunctionTok{file.exists}\NormalTok{(}\StringTok{\textquotesingle{}data/\textquotesingle{}}\NormalTok{), }\StringTok{\textquotesingle{}\textquotesingle{}}\NormalTok{, }\FunctionTok{dir.create}\NormalTok{(}\StringTok{\textquotesingle{}data/\textquotesingle{}}\NormalTok{))}
+\FunctionTok{ifelse}\NormalTok{(}\FunctionTok{file.exists}\NormalTok{(}\StringTok{\textquotesingle{}figs/\textquotesingle{}}\NormalTok{), }\StringTok{\textquotesingle{}\textquotesingle{}}\NormalTok{, }\FunctionTok{dir.create}\NormalTok{(}\StringTok{\textquotesingle{}figs/\textquotesingle{}}\NormalTok{))}
+\FunctionTok{ifelse}\NormalTok{(}\FunctionTok{file.exists}\NormalTok{(}\StringTok{\textquotesingle{}output/\textquotesingle{}}\NormalTok{), }\StringTok{\textquotesingle{}\textquotesingle{}}\NormalTok{, }\FunctionTok{dir.create}\NormalTok{(}\StringTok{\textquotesingle{}output/\textquotesingle{}}\NormalTok{))}
+\CommentTok{\# Package manager for R}
+\FunctionTok{install.packages}\NormalTok{(}\StringTok{"pacman"}\NormalTok{)}
+\CommentTok{\# These are the packages we are going to use}
+\NormalTok{pacman}\SpecialCharTok{::}\FunctionTok{p\_load}\NormalTok{(tximeta, SummarizedExperiment, tidyverse, ggplot2)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Better instal the PACKAGES from Bioconductor OR from R{-}cran one by one:}
+
+\CommentTok{\# Bioconductor packages: tximeta, SummarizedExperiment}
+\ControlFlowTok{if}\NormalTok{ (}\SpecialCharTok{!}\FunctionTok{require}\NormalTok{(}\StringTok{"BiocManager"}\NormalTok{, }\AttributeTok{quietly =} \ConstantTok{TRUE}\NormalTok{))}
+    \FunctionTok{install.packages}\NormalTok{(}\StringTok{"BiocManager"}\NormalTok{) }
+\CommentTok{\# BiocManager::install(version = "3.15")}
+\NormalTok{BiocManager}\SpecialCharTok{::}\FunctionTok{install}\NormalTok{(}\AttributeTok{version =} \StringTok{"3.18"}\NormalTok{)}
+\CommentTok{\#}
+\FunctionTok{library}\NormalTok{(}\StringTok{"tximeta"}\NormalTok{) }
+\FunctionTok{library}\NormalTok{(}\StringTok{"SummarizedExperiment"}\NormalTok{) }
+
+\CommentTok{\# R{-}cran packages: tidyverse, ggplot2 }
+\FunctionTok{install.packages}\NormalTok{(}\StringTok{"tidyverse"}\NormalTok{)}
+\FunctionTok{library}\NormalTok{(}\StringTok{"tidyverse"}\NormalTok{)}
+\FunctionTok{install.packages}\NormalTok{(}\StringTok{"ggplot2"}\NormalTok{)}
+\FunctionTok{library}\NormalTok{(}\StringTok{"ggplot2"}\NormalTok{)}
+
+\CommentTok{\# Just in case the Installation of BIOCONDUCTOR 3.18 was not complete or }
+\CommentTok{\# we need to update some packages:}
+\CommentTok{\# BiocManager::install(c("tximeta", "SummarizedExperiment"), force=TRUE)}
+\CommentTok{\# install.packages("dbplyr")}
+\end{Highlighting}
+\end{Shaded}
+
+Before importing the data, it is necessary to download the
+\textbf{sample information} from the experiment. To do this, we return
+to the SRA RUN SELECTOR to download the metadata (.txt format). After,
+we need to choose the information of interest.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{coldata }\OtherTok{\textless{}{-}} \FunctionTok{read.csv}\NormalTok{(}\StringTok{\textquotesingle{}SraRunTable.txt\textquotesingle{}}\NormalTok{)}
+\NormalTok{coldata }\OtherTok{\textless{}{-}}\NormalTok{ coldata[,}\FunctionTok{c}\NormalTok{(}\StringTok{\textquotesingle{}Run\textquotesingle{}}\NormalTok{, }\StringTok{\textquotesingle{}cetuximab\_resistance\textquotesingle{}}\NormalTok{, }\StringTok{\textquotesingle{}disease\_state\textquotesingle{}}\NormalTok{)]}
+\FunctionTok{names}\NormalTok{(coldata)[}\DecValTok{1}\NormalTok{] }\OtherTok{\textless{}{-}} \StringTok{"names"}
+\end{Highlighting}
+\end{Shaded}
+
+It is necessary to factorize those variables that, in a future analysis,
+we want to use to define the model. Also, we changed the special
+characters and empty spaces to avoid future problems.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{coldata}\SpecialCharTok{$}\NormalTok{cetuximab\_resistance }\OtherTok{\textless{}{-}} \FunctionTok{as.factor}\NormalTok{(coldata}\SpecialCharTok{$}\NormalTok{cetuximab\_resistance)}
+\end{Highlighting}
+\end{Shaded}
+
+Finally, we add the files created by Salmon:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Put the whole directory path to the folder or have the files in the working directory.}
+\CommentTok{\# This .sf files are the ones generated with Salmon during the alignment \& quantification}
+\NormalTok{coldata}\SpecialCharTok{$}\NormalTok{files }\OtherTok{\textless{}{-}} \FunctionTok{file.path}\NormalTok{(}\FunctionTok{paste0}\NormalTok{(}\StringTok{\textquotesingle{}salmon\_quants/\textquotesingle{}}\NormalTok{, coldata}\SpecialCharTok{$}\NormalTok{names, }\StringTok{"\_quant/quant.sf"}\NormalTok{))}
+\FunctionTok{class}\NormalTok{(coldata)}
+\FunctionTok{colnames}\NormalTok{(coldata)}
+\end{Highlighting}
+\end{Shaded}
+
+\subsubsection{Upload FILE
+salmon\_quants:}\label{upload-file-salmon_quants}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# How is the format of the data table?}
+\FunctionTok{str}\NormalTok{(coldata)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{\textquotesingle{}data.frame\textquotesingle{}:   10 obs. of  4 variables:}
+\NormalTok{ $ names               : chr  "SRR13127892" "SRR13127893" "SRR13127894" "SRR13127895" ...}
+\NormalTok{ $ cetuximab\_resistance: Factor w/ 2 levels "resistant","sensitive": 1 1 1 1 1 2 2 2 2 2}
+\NormalTok{ $ disease\_state       : chr  "primary colorectal cancer cell line" "primary colorectal cancer cell line" "primary colorectal cancer cell line" "primary colorectal cancer cell line" ...}
+\NormalTok{ $ files               : chr  "salmon\_quants/SRR13127892\_quant/quant.sf" "salmon\_quants/SRR13127893\_quant/quant.sf" "salmon\_quants/SRR13127894\_quant/quant.sf" "salmon\_quants/SRR13127895\_quant/quant.sf" ...}
+\end{Highlighting}
+\end{Shaded}
+
+This part of the workflow imports \textbf{transcript-level
+quantification data}, and then aggregate it to the gene-level with
+`tximeta' (\emph{Love et al.~2020}). Transcript quantification methods
+such as `Salmon' (\emph{Patro et al.~2017}), `kallisto' (\emph{Bray et
+al.~2016}), or `RSEM' (\emph{Li and Dewey 2011}) perform \textbf{mapping
+or alignment of reads to reference transcripts}, outputting estimated
+counts per transcript as well as effective transcript lengths which
+summarize bias effects. After running one of these tools, `tximeta'
+package is used to assemble estimated count and offset matrices for use
+later with differential gene expression packages (as it will be
+demonstrated below).
+
+Once the information on the samples has been prepared, the `tximeta'
+package will be used to import the \textbf{transcripts-level data}
+generated by Salmon and then convert it to \textbf{gene-level data}.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{getwd}\NormalTok{()}
+\CommentTok{\# "/Users/javierd19/Desktop/R\_RNAseq{-}vJun2024"}
+\CommentTok{\# setwd("/Users/javierd19/Desktop/R\_RNAseq{-}vJun2024")}
+\CommentTok{\# load("env\_13102022copy.RData")}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{reads }\OtherTok{\textless{}{-}}\NormalTok{ tximeta}\SpecialCharTok{::}\FunctionTok{tximeta}\NormalTok{(coldata)}
+\NormalTok{reads}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{importing quantifications}
+\NormalTok{reading in files with read\_tsv}
+\NormalTok{1 2 3 4 5 6 7 8 9 10 }
+\NormalTok{found matching transcriptome:}
+\NormalTok{[ GENCODE {-} Homo sapiens {-} release 38 ]}
+\NormalTok{loading existing TxDb created: 2022{-}01{-}13 16:57:07}
+\NormalTok{Loading required package: GenomicFeatures}
+\NormalTok{Loading required package: AnnotationDbi}
+
+\NormalTok{Attaching package: \textquotesingle{}AnnotationDbi\textquotesingle{}}
+
+\NormalTok{The following object is masked from \textquotesingle{}package:dplyr\textquotesingle{}:}
+
+\NormalTok{    select}
+
+\NormalTok{loading existing transcript ranges created: 2022{-}01{-}13 16:57:10}
+\NormalTok{fetching genome info for GENCODE}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Let\textquotesingle{}s show the 10 first rows}
+\NormalTok{SummarizedExperiment}\SpecialCharTok{::}\FunctionTok{assay}\NormalTok{(reads)[}\DecValTok{1}\SpecialCharTok{:}\DecValTok{10}\NormalTok{,]}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{                  SRR13127892 SRR13127893 SRR13127894 SRR13127895}
+\NormalTok{ENST00000456328.2       0.000      13.931       10.23       0.000}
+\NormalTok{ENST00000450305.2       0.000       0.000        0.00       0.000}
+\NormalTok{ENST00000488147.1      72.828      89.245        0.00      15.349}
+\NormalTok{ENST00000619216.1       2.888       4.670        4.84      11.348}
+\NormalTok{ENST00000473358.1       0.000       0.000        0.00       0.000}
+\NormalTok{ENST00000469289.1       0.000       0.000        0.00       5.201}
+\NormalTok{ENST00000607096.1       0.000       0.994        0.00       0.000}
+\NormalTok{ENST00000417324.1       0.000       0.000        0.00       0.000}
+\NormalTok{ENST00000461467.1       0.000       0.000        0.00       0.000}
+\NormalTok{ENST00000606857.1       0.000       0.000        0.00       0.000}
+\NormalTok{                  SRR13127896 SRR13127898 SRR13127899 SRR13127900}
+\NormalTok{ENST00000456328.2           0       0.000       0.000       0.000}
+\NormalTok{ENST00000450305.2           0       0.000       0.000       0.000}
+\NormalTok{ENST00000488147.1           0     330.411     227.027       0.000}
+\NormalTok{ENST00000619216.1           0      11.641       9.599       7.210}
+\NormalTok{ENST00000473358.1           0       0.000       0.000       2.595}
+\NormalTok{ENST00000469289.1           0      16.082       0.000       0.000}
+\NormalTok{ENST00000607096.1           0       0.000       0.000       0.000}
+\NormalTok{ENST00000417324.1           0       0.000       0.000       0.000}
+\NormalTok{ENST00000461467.1           0       0.000       6.677       0.000}
+\NormalTok{ENST00000606857.1           0       0.000       0.000       0.000}
+\NormalTok{                  SRR13127901 SRR13127930}
+\NormalTok{ENST00000456328.2       0.000      11.633}
+\NormalTok{ENST00000450305.2       0.000       0.000}
+\NormalTok{ENST00000488147.1     134.763       0.000}
+\NormalTok{ENST00000619216.1       8.385      12.033}
+\NormalTok{ENST00000473358.1       1.340       0.000}
+\NormalTok{ENST00000469289.1       0.000       0.000}
+\NormalTok{ENST00000607096.1       0.000       0.000}
+\NormalTok{ENST00000417324.1       0.000       0.000}
+\NormalTok{ENST00000461467.1       0.000       1.218}
+\NormalTok{ENST00000606857.1       0.000       0.000}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Whe change the transcripts to genes}
+\NormalTok{gse }\OtherTok{\textless{}{-}}\NormalTok{ tximeta}\SpecialCharTok{::}\FunctionTok{summarizeToGene}\NormalTok{(reads)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{loading existing TxDb created: 2022{-}01{-}13 16:57:07}
+\NormalTok{obtaining transcript{-}to{-}gene mapping from database}
+\NormalTok{loading existing gene ranges created: 2022{-}01{-}13 16:58:23}
+\NormalTok{summarizing abundance}
+\NormalTok{summarizing counts}
+\NormalTok{summarizing length}
+\NormalTok{summarizing inferential replicates}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# What are now the firs 10?}
+\NormalTok{SummarizedExperiment}\SpecialCharTok{::}\FunctionTok{assay}\NormalTok{(gse)[}\DecValTok{1}\SpecialCharTok{:}\DecValTok{10}\NormalTok{,]}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{                   SRR13127892 SRR13127893 SRR13127894 SRR13127895}
+\NormalTok{ENSG00000000003.15     261.407     387.004     350.040     134.935}
+\NormalTok{ENSG00000000005.6        2.000       0.000       0.000       0.000}
+\NormalTok{ENSG00000000419.14     404.259     680.751     323.300     176.182}
+\NormalTok{ENSG00000000457.14     155.001     314.826      81.439      39.013}
+\NormalTok{ENSG00000000460.17     185.753     147.393     137.046     147.116}
+\NormalTok{ENSG00000000938.13       0.000       0.000       0.000       0.000}
+\NormalTok{ENSG00000000971.16       4.000       1.000       2.000       0.000}
+\NormalTok{ENSG00000001036.14     499.000     793.191     616.000     450.000}
+\NormalTok{ENSG00000001084.13     391.297     915.665     321.359     315.728}
+\NormalTok{ENSG00000001167.15     357.672     489.379     412.205     285.073}
+\NormalTok{                   SRR13127896 SRR13127898 SRR13127899 SRR13127900}
+\NormalTok{ENSG00000000003.15     343.523     838.667     755.914     228.669}
+\NormalTok{ENSG00000000005.6        0.000      15.000       6.000       0.000}
+\NormalTok{ENSG00000000419.14     200.147    1596.902     974.628     467.222}
+\NormalTok{ENSG00000000457.14      74.205     118.999     116.120      85.014}
+\NormalTok{ENSG00000000460.17      99.195     268.698     168.160      92.275}
+\NormalTok{ENSG00000000938.13       0.000     118.000      73.000       0.000}
+\NormalTok{ENSG00000000971.16       2.000       0.000       0.000       0.000}
+\NormalTok{ENSG00000001036.14     561.000     604.000     271.000     434.387}
+\NormalTok{ENSG00000001084.13     387.921     572.819     411.158     593.288}
+\NormalTok{ENSG00000001167.15     184.305     560.103     532.814     596.569}
+\NormalTok{                   SRR13127901 SRR13127930}
+\NormalTok{ENSG00000000003.15     676.098     745.451}
+\NormalTok{ENSG00000000005.6        2.000       0.000}
+\NormalTok{ENSG00000000419.14    1216.694     683.574}
+\NormalTok{ENSG00000000457.14     282.054     961.012}
+\NormalTok{ENSG00000000460.17     241.001     256.548}
+\NormalTok{ENSG00000000938.13       0.000       0.000}
+\NormalTok{ENSG00000000971.16       0.000       1.000}
+\NormalTok{ENSG00000001036.14    1833.542    2001.000}
+\NormalTok{ENSG00000001084.13    1172.119    1220.998}
+\NormalTok{ENSG00000001167.15     817.449     728.773}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# We check the column sum to see if there is bad samples}
+\FunctionTok{colSums}\NormalTok{(SummarizedExperiment}\SpecialCharTok{::}\FunctionTok{assay}\NormalTok{(gse))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{Show in New Window}
+\NormalTok{SRR13127892 SRR13127893 SRR13127894 SRR13127895 SRR13127896 SRR13127898 }
+\NormalTok{   10670448    14107974    12099407     8106567    10953058    18348019 }
+\NormalTok{SRR13127899 SRR13127900 SRR13127901 SRR13127930 }
+\NormalTok{   13497475     8840468    19038433    15038555 }
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# With this we could retrive the coldata that we added in the first step}
+\NormalTok{SummarizedExperiment}\SpecialCharTok{::}\FunctionTok{colData}\NormalTok{(gse)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{DataFrame with 10 rows and 3 columns}
+\NormalTok{                  names cetuximab\_resistance          disease\_state}
+\NormalTok{            \textless{}character\textgreater{}             \textless{}factor\textgreater{}            \textless{}character\textgreater{}}
+\NormalTok{SRR13127892 SRR13127892            resistant primary colorectal c..}
+\NormalTok{SRR13127893 SRR13127893            resistant primary colorectal c..}
+\NormalTok{SRR13127894 SRR13127894            resistant primary colorectal c..}
+\NormalTok{SRR13127895 SRR13127895            resistant primary colorectal c..}
+\NormalTok{SRR13127896 SRR13127896            resistant primary colorectal c..}
+\NormalTok{SRR13127898 SRR13127898            sensitive primary colorectal c..}
+\NormalTok{SRR13127899 SRR13127899            sensitive primary colorectal c..}
+\NormalTok{SRR13127900 SRR13127900            sensitive primary colorectal c..}
+\NormalTok{SRR13127901 SRR13127901            sensitive primary colorectal c..}
+\NormalTok{SRR13127930 SRR13127930            sensitive primary colorectal c..}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# We can now do some data processing}
+\NormalTok{coldata }\OtherTok{\textless{}{-}}\NormalTok{ SummarizedExperiment}\SpecialCharTok{::}\FunctionTok{colData}\NormalTok{(gse)}
+\NormalTok{coldata}\SpecialCharTok{$}\NormalTok{cetuximab\_resistance}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{Show in New Window}
+\NormalTok{ [1] resistant resistant resistant resistant resistant sensitive sensitive}
+\NormalTok{ [8] sensitive sensitive sensitive}
+\NormalTok{Levels: resistant sensitive}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{count\_mat }\OtherTok{\textless{}{-}} \FunctionTok{round}\NormalTok{(SummarizedExperiment}\SpecialCharTok{::}\FunctionTok{assay}\NormalTok{(gse))}
+\FunctionTok{dim}\NormalTok{(count\_mat)}
+\FunctionTok{summary}\NormalTok{(count\_mat)}
+\FunctionTok{head}\NormalTok{(count\_mat,}\DecValTok{5}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{[1] 60230    10}
+\NormalTok{                   SRR13127892 SRR13127893 SRR13127894 SRR13127895}
+\NormalTok{ENSG00000000003.15         261         387         350         135}
+\NormalTok{ENSG00000000005.6            2           0           0           0}
+\NormalTok{ENSG00000000419.14         404         681         323         176}
+\NormalTok{ENSG00000000457.14         155         315          81          39}
+\NormalTok{ENSG00000000460.17         186         147         137         147}
+\NormalTok{                   SRR13127896 SRR13127898 SRR13127899 SRR13127900}
+\NormalTok{ENSG00000000003.15         344         839         756         229}
+\NormalTok{ENSG00000000005.6            0          15           6           0}
+\NormalTok{ENSG00000000419.14         200        1597         975         467}
+\NormalTok{ENSG00000000457.14          74         119         116          85}
+\NormalTok{ENSG00000000460.17          99         269         168          92}
+\NormalTok{                   SRR13127901 SRR13127930}
+\NormalTok{ENSG00000000003.15         676         745}
+\NormalTok{ENSG00000000005.6            2           0}
+\NormalTok{ENSG00000000419.14        1217         684}
+\NormalTok{ENSG00000000457.14         282         961}
+\NormalTok{ENSG00000000460.17         241         257}
+\end{Highlighting}
+\end{Shaded}
+
+We filter the features that present too many zeros:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Filter rows with row sum higher than 1}
+\FunctionTok{print}\NormalTok{(}\StringTok{"How many starting rows do we have?"}\NormalTok{)}
+\FunctionTok{nrow}\NormalTok{(count\_mat)}
+\NormalTok{keep }\OtherTok{\textless{}{-}} \FunctionTok{rowSums}\NormalTok{(count\_mat) }\SpecialCharTok{\textgreater{}} \DecValTok{10}
+\NormalTok{count\_matF }\OtherTok{\textless{}{-}}\NormalTok{ count\_mat[keep,]}
+\FunctionTok{print}\NormalTok{(}\StringTok{"How many rows do we have after 1st filtering?"}\NormalTok{)}
+\FunctionTok{nrow}\NormalTok{(count\_matF)}
+\CommentTok{\# Filter rows with values higher than 10 and rowsums higher than 3}
+\NormalTok{keep }\OtherTok{\textless{}{-}} \FunctionTok{rowSums}\NormalTok{(count\_mat }\SpecialCharTok{\textgreater{}=} \DecValTok{10}\NormalTok{) }\SpecialCharTok{\textgreater{}=} \DecValTok{3}
+\NormalTok{count\_matFF }\OtherTok{\textless{}{-}}\NormalTok{ count\_mat[keep,]}
+\FunctionTok{print}\NormalTok{(}\StringTok{"How many rows do we have after 2nd filtering?"}\NormalTok{)}
+\FunctionTok{nrow}\NormalTok{(count\_matFF)}
+\CommentTok{\# head(count\_matF[,c(1,2,3,6,7,8)], 10)}
+\CommentTok{\# head(count\_matFF[,c(1,2,3,6,7,8)], 10)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{[1] "How many starting rows do we have?"}
+\NormalTok{[1] 60230}
+\NormalTok{[1] "How many rows do we have after 1st filtering?"}
+\NormalTok{[1] 25041}
+\NormalTok{[1] "How many rows do we have after 2nd filtering?"}
+\NormalTok{[1] 16949}
+\end{Highlighting}
+\end{Shaded}
+
+Finally, we generate the final SummarizedExperiment object:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# RData gse:}
+\NormalTok{gse\_final }\OtherTok{\textless{}{-}}\NormalTok{ SummarizedExperiment}\SpecialCharTok{::}\FunctionTok{SummarizedExperiment}\NormalTok{(}\AttributeTok{assays =}\NormalTok{ count\_matFF,}
+                          \AttributeTok{rowData =} \FunctionTok{rownames}\NormalTok{(count\_matFF), }\AttributeTok{colData =}\NormalTok{ coldata)}
+\NormalTok{gse\_final}
+\CommentTok{\# The coldata in the object containing phenodata }
+\NormalTok{gse\_final}\SpecialCharTok{@}\NormalTok{colData}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{class: SummarizedExperiment }
+\NormalTok{dim: 16949 10 }
+\NormalTok{metadata(0):}
+\NormalTok{assays(1): \textquotesingle{}\textquotesingle{}}
+\NormalTok{rownames(16949): ENSG00000000003.15 ENSG00000000419.14 ...}
+\NormalTok{  ENSG00000288722.1 ENSG00000288725.1}
+\NormalTok{rowData names(1): X}
+\NormalTok{colnames(10): SRR13127892 SRR13127893 ... SRR13127901 SRR13127930}
+\NormalTok{colData names(3): names cetuximab\_resistance disease\_state}
+\NormalTok{DataFrame with 10 rows and 3 columns}
+\NormalTok{                  names cetuximab\_resistance          disease\_state}
+\NormalTok{            \textless{}character\textgreater{}             \textless{}factor\textgreater{}            \textless{}character\textgreater{}}
+\NormalTok{SRR13127892 SRR13127892            resistant primary colorectal c..}
+\NormalTok{SRR13127893 SRR13127893            resistant primary colorectal c..}
+\NormalTok{SRR13127894 SRR13127894            resistant primary colorectal c..}
+\NormalTok{SRR13127895 SRR13127895            resistant primary colorectal c..}
+\NormalTok{SRR13127896 SRR13127896            resistant primary colorectal c..}
+\NormalTok{SRR13127898 SRR13127898            sensitive primary colorectal c..}
+\NormalTok{SRR13127899 SRR13127899            sensitive primary colorectal c..}
+\NormalTok{SRR13127900 SRR13127900            sensitive primary colorectal c..}
+\NormalTok{SRR13127901 SRR13127901            sensitive primary colorectal c..}
+\NormalTok{SRR13127930 SRR13127930            sensitive primary colorectal c..}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# The expression data}
+\NormalTok{gse\_final}\SpecialCharTok{@}\NormalTok{assays ; SummarizedExperiment}\SpecialCharTok{::}\FunctionTok{assay}\NormalTok{(gse\_final)[}\DecValTok{1}\SpecialCharTok{:}\DecValTok{4}\NormalTok{,]}
+\FunctionTok{dim}\NormalTok{(SummarizedExperiment}\SpecialCharTok{::}\FunctionTok{assay}\NormalTok{(gse\_final)[,])}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{An object of class "SimpleAssays"}
+\NormalTok{Slot "data":}
+\NormalTok{List of length 1}
+
+\NormalTok{                   SRR13127892 SRR13127893 SRR13127894 SRR13127895}
+\NormalTok{ENSG00000000003.15         261         387         350         135}
+\NormalTok{ENSG00000000419.14         404         681         323         176}
+\NormalTok{ENSG00000000457.14         155         315          81          39}
+\NormalTok{ENSG00000000460.17         186         147         137         147}
+\NormalTok{                   SRR13127896 SRR13127898 SRR13127899 SRR13127900}
+\NormalTok{ENSG00000000003.15         344         839         756         229}
+\NormalTok{ENSG00000000419.14         200        1597         975         467}
+\NormalTok{ENSG00000000457.14          74         119         116          85}
+\NormalTok{ENSG00000000460.17          99         269         168          92}
+\NormalTok{                   SRR13127901 SRR13127930}
+\NormalTok{ENSG00000000003.15         676         745}
+\NormalTok{ENSG00000000419.14        1217         684}
+\NormalTok{ENSG00000000457.14         282         961}
+\NormalTok{ENSG00000000460.17         241         257}
+\NormalTok{[1] 16949    10}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# We can plot the expression for each sample, }
+\CommentTok{\# but before we generate a data matrix with the final GSE:}
+\NormalTok{gseMX\_final }\OtherTok{\textless{}{-}} \FunctionTok{as.matrix}\NormalTok{(SummarizedExperiment}\SpecialCharTok{::}\FunctionTok{assay}\NormalTok{(gse\_final)[,])}
+\FunctionTok{colnames}\NormalTok{(gseMX\_final) }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\StringTok{"resCRCc92"}\NormalTok{,}\StringTok{"resCRCc93"}\NormalTok{,}\StringTok{"resCRCc94"}\NormalTok{,}\StringTok{"resCRCc95"}\NormalTok{,}\StringTok{"resCRCc96"}\NormalTok{,}
+                           \StringTok{"senCRCc98"}\NormalTok{,}\StringTok{"senCRCc99"}\NormalTok{,}\StringTok{"senCRCc00"}\NormalTok{,}\StringTok{"senCRCc01"}\NormalTok{,}\StringTok{"senCRCc30"}\NormalTok{)}
+\FunctionTok{colSums}\NormalTok{(gseMX\_final)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{resCRCc92 resCRCc93 resCRCc94 resCRCc95 resCRCc96 senCRCc98 senCRCc99 }
+\NormalTok{ 10650326  14064877  12059045   8086648  10934933  18287105  13448160 }
+\NormalTok{senCRCc00 senCRCc01 senCRCc30 }
+\NormalTok{  8804101  18974802  14987230 }
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Now we can plot the expression for each sample:}
+\FunctionTok{par}\NormalTok{(}\AttributeTok{oma=}\FunctionTok{c}\NormalTok{(}\DecValTok{3}\NormalTok{,.}\DecValTok{5}\NormalTok{,.}\DecValTok{5}\NormalTok{,.}\DecValTok{5}\NormalTok{)) }\CommentTok{\# all sides have 3 lines of space (bottom, left, top, right)) }
+\CommentTok{\# boxplot(log2(assay(gseMX\_final)+1), las=2, col=c(rep("\#005AB5" ,5), rep("\#DC3220",5)))}
+\CommentTok{\# for the boxplot deleted \textquotesingle{}assay\textquotesingle{}  }
+\FunctionTok{boxplot}\NormalTok{(}\FunctionTok{log2}\NormalTok{(gseMX\_final}\SpecialCharTok{+}\DecValTok{1}\NormalTok{), }\AttributeTok{las=}\DecValTok{2}\NormalTok{, }\AttributeTok{col=}\FunctionTok{c}\NormalTok{(}\FunctionTok{rep}\NormalTok{(}\StringTok{"\#005AB5"}\NormalTok{ ,}\DecValTok{5}\NormalTok{), }\FunctionTok{rep}\NormalTok{(}\StringTok{"\#DC3220"}\NormalTok{,}\DecValTok{5}\NormalTok{)))}
+\CommentTok{\# boxplot(log2(gseMX\_final+1), las=2, col=c(rep("red" ,5), rep("green",5)))}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics[width=\textwidth,height=4.16667in]{assets/bplot_raw.png}
+
+And plot a heatmap
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{source}\NormalTok{(}\StringTok{\textquotesingle{}hmap.R\textquotesingle{}}\NormalTok{)}
+\NormalTok{pacman}\SpecialCharTok{::}\FunctionTok{p\_load}\NormalTok{(RColorBrewer, gplots, dendextend)}
+\NormalTok{col }\OtherTok{\textless{}{-}} \FunctionTok{brewer.pal}\NormalTok{(}\DecValTok{11}\NormalTok{,}\StringTok{"RdBu"}\NormalTok{)}
+\NormalTok{col }\OtherTok{\textless{}{-}} \FunctionTok{rev}\NormalTok{(col)}
+
+\NormalTok{colbars1 }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\FunctionTok{rep}\NormalTok{(}\StringTok{"\#005AB5"}\NormalTok{ ,}\DecValTok{5}\NormalTok{), }\FunctionTok{rep}\NormalTok{(}\StringTok{"\#DC3220"}\NormalTok{,}\DecValTok{5}\NormalTok{))}
+
+\CommentTok{\# Selecting GENES with highest SD (variability) over all samples}
+\NormalTok{gseMXlg }\OtherTok{\textless{}{-}} \FunctionTok{log2}\NormalTok{(gseMX\_final[,]}\SpecialCharTok{+}\DecValTok{1}\NormalTok{)}
+\FunctionTok{dim}\NormalTok{(gseMXlg)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{[1] 16949    10}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{head}\NormalTok{(gseMXlg)}
+\FunctionTok{class}\NormalTok{(gseMXlg)}
+\CommentTok{\# rowMeans(gseMXlg)}
+\CommentTok{\# summary(rowMeans(gseMXlg))}
+\NormalTok{rows\_sd }\OtherTok{\textless{}{-}} \FunctionTok{apply}\NormalTok{(gseMXlg, }\DecValTok{1}\NormalTok{, sd)}
+\FunctionTok{summary}\NormalTok{(rows\_sd)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. }
+\NormalTok{ 0.2564  0.8127  1.0589  1.2648  1.4956  5.4853}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{rows\_sd}\SpecialCharTok{\textgreater{}}\FloatTok{1.5}
+\NormalTok{gseMXlg[rows\_sd}\SpecialCharTok{\textgreater{}}\FloatTok{1.5}\NormalTok{,]}
+\NormalTok{rows\_sd}\SpecialCharTok{\textgreater{}}\FloatTok{5.0}
+\NormalTok{gseMXlg[rows\_sd}\SpecialCharTok{\textgreater{}}\FloatTok{5.0}\NormalTok{,]}
+\CommentTok{\# rowSds(gseMXlg)\textgreater{}1.5}
+\CommentTok{\# gseMXlg[rowSds(gseMXlg)\textgreater{}5.0,]}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{                   resCRCc92 resCRCc93 resCRCc94 resCRCc95 resCRCc96}
+\NormalTok{ENSG00000086548.9   2.584963  2.321928  6.169925  5.087463  2.807355}
+\NormalTok{ENSG00000129824.16  0.000000  0.000000  0.000000  0.000000 11.551708}
+\NormalTok{ENSG00000161798.7   5.000000  4.584963  1.000000  1.584963  2.000000}
+\NormalTok{ENSG00000166825.15  7.577429  7.577429  3.584963  3.906891  4.321928}
+\NormalTok{ENSG00000220842.6  10.455327 12.184875  0.000000  0.000000  0.000000}
+\NormalTok{ENSG00000243509.6   5.882643  0.000000 13.286558 13.268396  5.672425}
+\NormalTok{                   senCRCc98 senCRCc99 senCRCc00 senCRCc01 senCRCc30}
+\NormalTok{ENSG00000086548.9  12.935533 12.096715 13.207472 14.562242  2.321928}
+\NormalTok{ENSG00000129824.16  2.321928  1.584963 10.853310 11.836445  0.000000}
+\NormalTok{ENSG00000161798.7   2.000000  0.000000 11.511753 12.378837 12.830515}
+\NormalTok{ENSG00000166825.15 14.509404 14.464546  2.321928  2.321928  0.000000}
+\NormalTok{ENSG00000220842.6  11.898223 10.151017 10.690871 12.062721 11.436191}
+\NormalTok{ENSG00000243509.6   0.000000  0.000000  7.426265  8.413628  3.906891}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Selecting GENES with highest variability between the 2 conditions: res 1:5 ; sen 6:10}
+\FunctionTok{table}\NormalTok{( }\FunctionTok{abs}\NormalTok{(}\FunctionTok{rowMeans}\NormalTok{(gseMXlg[,}\DecValTok{1}\SpecialCharTok{:}\DecValTok{5}\NormalTok{])}\SpecialCharTok{{-}}\FunctionTok{rowMeans}\NormalTok{(gseMXlg[,}\DecValTok{6}\SpecialCharTok{:}\DecValTok{10}\NormalTok{])) }\SpecialCharTok{\textgreater{}} \FloatTok{4.0}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{FALSE  TRUE }
+\NormalTok{16755   194 }
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{table}\NormalTok{( }\FunctionTok{abs}\NormalTok{(}\FunctionTok{rowMeans}\NormalTok{(gseMXlg[,}\DecValTok{1}\SpecialCharTok{:}\DecValTok{5}\NormalTok{])}\SpecialCharTok{{-}}\FunctionTok{rowMeans}\NormalTok{(gseMXlg[,}\DecValTok{6}\SpecialCharTok{:}\DecValTok{10}\NormalTok{])) }\SpecialCharTok{\textgreater{}} \FloatTok{5.0}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{FALSE  TRUE }
+\NormalTok{16876    73 }
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{gseMXtopV }\OtherTok{\textless{}{-}}\NormalTok{ gseMXlg[}\FunctionTok{abs}\NormalTok{(}\FunctionTok{rowMeans}\NormalTok{(gseMXlg[,}\DecValTok{1}\SpecialCharTok{:}\DecValTok{5}\NormalTok{])}\SpecialCharTok{{-}}\FunctionTok{rowMeans}\NormalTok{(gseMXlg[,}\DecValTok{6}\SpecialCharTok{:}\DecValTok{10}\NormalTok{]))}\SpecialCharTok{\textgreater{}}\FloatTok{5.0}\NormalTok{,]}
+\FunctionTok{dim}\NormalTok{(gseMXlg)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{[1] 16949    10}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{dim}\NormalTok{(gseMXtopV)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{[1] 73 10}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# HEATMAP with the GENES that showed the highest variability between the 2 conditions:}
+\FunctionTok{par}\NormalTok{(}\AttributeTok{oma=}\FunctionTok{c}\NormalTok{(}\DecValTok{2}\NormalTok{,.}\DecValTok{5}\NormalTok{,.}\DecValTok{5}\NormalTok{,.}\DecValTok{5}\NormalTok{)) }\CommentTok{\# all sides have X lines of space (bottom, left, top, right)) }
+\CommentTok{\#}
+\FunctionTok{hmap}\NormalTok{(}\AttributeTok{set =}\NormalTok{ gseMXtopV,}
+     \AttributeTok{scale =} \StringTok{\textquotesingle{}row\textquotesingle{}}\NormalTok{,}
+     \AttributeTok{tset =} \FunctionTok{t}\NormalTok{(gseMXtopV),}
+     \AttributeTok{col =}\NormalTok{ col,}
+     \AttributeTok{colsidecolors =}\NormalTok{ colbars1,}
+     \AttributeTok{hcexRow =}\NormalTok{ .}\DecValTok{5}\NormalTok{,}
+     \AttributeTok{hcexCol =} \DecValTok{1}\NormalTok{,}
+     \AttributeTok{clustering =}\NormalTok{ T,}
+     \AttributeTok{main =} \StringTok{"Heatmap raw"}\NormalTok{)}
+\CommentTok{\# }
+\CommentTok{\# The next HEATMAPs were also built with "hmap" with different data matrices: }
+\DocumentationTok{\#\#\# selecting just the first 100 genes NUT this does not give a sensible PLOT}
+\CommentTok{\# hmap(set = log2(gseMX\_final[1:100,]+1),}
+\CommentTok{\#      scale = \textquotesingle{}row\textquotesingle{},}
+\CommentTok{\#      tset = t(log2(gseMX\_final[1:100,]+1)),}
+\CommentTok{\#      col = col,}
+\CommentTok{\#      colsidecolors = colbars1,}
+\CommentTok{\#      hcexRow = .5,}
+\CommentTok{\#      hcexCol = 1,}
+\CommentTok{\#      clustering = T,}
+\CommentTok{\#      main = "Heatmap raw")}
+\DocumentationTok{\#\#\# using ALL GENES }
+\CommentTok{\# hmap(set = log2(assay(gse\_final)+1),}
+\CommentTok{\#      scale = \textquotesingle{}row\textquotesingle{},}
+\CommentTok{\#      tset = t(log2(assay(gse\_final)+1)),}
+\CommentTok{\#      col = col,}
+\CommentTok{\#      colsidecolors = colbars1,}
+\CommentTok{\#      hcexRow = .5,}
+\CommentTok{\#      hcexCol = 1,}
+\CommentTok{\#      clustering = T,}
+\CommentTok{\#      main = "Heatmap raw")}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics[width=\textwidth,height=4.16667in]{assets/hmap3.png}
+\includegraphics[width=\textwidth,height=4.16667in]{assets/hmap2.png}
+\includegraphics[width=\textwidth,height=4.16667in]{assets/hmap1.png}
+
+We check the total number of counts per sample, and more or less they
+are somewhat in the same range.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{apply}\NormalTok{(gseMX\_final,}\DecValTok{2}\NormalTok{,sum)}
+\CommentTok{\#Using "assay"\# apply(assay(gse\_final),2,sum)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{resCRCc92 resCRCc93 resCRCc94 resCRCc95 resCRCc96 senCRCc98 senCRCc99 }
+\NormalTok{ 10650326  14064877  12059045   8086648  10934933  18287105  13448160 }
+\NormalTok{senCRCc00 senCRCc01 senCRCc30 }
+\NormalTok{  8804101  18974802  14987230 }
+\end{Highlighting}
+\end{Shaded}
+
+The data is not so bad, but we should try to normalize it to make it
+more comparable. We will perform quantile normalization.
+
+\subsubsection{Install preprocessCore}\label{install-preprocesscore}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{pacman}\SpecialCharTok{::}\FunctionTok{p\_load}\NormalTok{(}\StringTok{"preprocessCore"}\NormalTok{)}
+\FunctionTok{set.seed}\NormalTok{(}\DecValTok{261}\NormalTok{)}
+\NormalTok{normalized\_reads }\OtherTok{\textless{}{-}} \FunctionTok{normalize.quantiles}\NormalTok{(gseMX\_final)}
+\FunctionTok{colnames}\NormalTok{(normalized\_reads) }\OtherTok{\textless{}{-}} \FunctionTok{colnames}\NormalTok{(gseMX\_final)}
+\FunctionTok{rownames}\NormalTok{(normalized\_reads) }\OtherTok{\textless{}{-}} \FunctionTok{rownames}\NormalTok{(gseMX\_final)}
+\FunctionTok{apply}\NormalTok{(normalized\_reads,}\DecValTok{2}\NormalTok{,sum)}
+\CommentTok{\#ALSO\#}
+\CommentTok{\#Using "assay"\# normalized\_reads \textless{}{-} normalize.quantiles(assay(gse\_final))}
+\CommentTok{\#Using "assay"\# colnames(normalized\_reads) \textless{}{-} colnames(assay(gse\_final))}
+\CommentTok{\#Using "assay"\# rownames(normalized\_reads) \textless{}{-} rownames(assay(gse\_final))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{resCRCc92 resCRCc93 resCRCc94 resCRCc95 resCRCc96 senCRCc98 senCRCc99 }
+\NormalTok{ 13029594  13029665  13029450  13029359  13029594  13029664  13029690 }
+\NormalTok{senCRCc00 senCRCc01 senCRCc30 }
+\NormalTok{ 13029717  13029725  13029596 }
+\end{Highlighting}
+\end{Shaded}
+
+And we plot the DISTRIBUTIONS (boxplots) of the data to check if the
+normalization has been done.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{par}\NormalTok{(}\AttributeTok{oma=}\FunctionTok{c}\NormalTok{(}\DecValTok{3}\NormalTok{,.}\DecValTok{5}\NormalTok{,.}\DecValTok{5}\NormalTok{,.}\DecValTok{5}\NormalTok{)) }\CommentTok{\# all sides have 3 lines of space (bottom, left, top, right)) }
+\FunctionTok{boxplot}\NormalTok{(}\FunctionTok{log2}\NormalTok{(normalized\_reads}\SpecialCharTok{+}\DecValTok{1}\NormalTok{), }\AttributeTok{las =} \DecValTok{2}\NormalTok{, }\AttributeTok{col =} \FunctionTok{c}\NormalTok{(}\FunctionTok{rep}\NormalTok{(}\StringTok{"\#DC3220"}\NormalTok{,}\DecValTok{5}\NormalTok{), }\FunctionTok{rep}\NormalTok{(}\StringTok{"\#005AB5"}\NormalTok{,}\DecValTok{5}\NormalTok{)))}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics[width=\textwidth,height=4.16667in]{assets/bplot_norm.png}
+
+And we plot also the DENSITIES (density plots) and a PAIR COMPARISON
+(scatter plot) of the data after the normalization.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# density plots}
+\FunctionTok{par}\NormalTok{(}\AttributeTok{oma=}\FunctionTok{c}\NormalTok{(}\DecValTok{3}\NormalTok{,.}\DecValTok{5}\NormalTok{,.}\DecValTok{5}\NormalTok{,.}\DecValTok{5}\NormalTok{)) }\CommentTok{\# all sides have 3 lines of space (bottom, left, top, right)) }
+\NormalTok{dens }\OtherTok{\textless{}{-}} \FunctionTok{apply}\NormalTok{(}\FunctionTok{log2}\NormalTok{(normalized\_reads}\SpecialCharTok{+}\DecValTok{1}\NormalTok{), }\DecValTok{2}\NormalTok{, density)}
+\CommentTok{\#}
+\FunctionTok{plot}\NormalTok{(}\StringTok{"DATA DENSITY 1"}\NormalTok{, }\AttributeTok{xlim=}\FunctionTok{range}\NormalTok{(}\FunctionTok{sapply}\NormalTok{(dens, }\StringTok{"["}\NormalTok{, }\StringTok{"x"}\NormalTok{)), }\AttributeTok{ylim=}\FunctionTok{range}\NormalTok{(}\FunctionTok{sapply}\NormalTok{(dens, }\StringTok{"["}\NormalTok{, }\StringTok{"y"}\NormalTok{)))}
+\FunctionTok{mapply}\NormalTok{(lines, dens, }\AttributeTok{col=}\DecValTok{1}\SpecialCharTok{:}\FunctionTok{length}\NormalTok{(dens))}
+\FunctionTok{legend}\NormalTok{(}\StringTok{"topright"}\NormalTok{, }\AttributeTok{legend=}\FunctionTok{names}\NormalTok{(dens), }\AttributeTok{fill=}\DecValTok{1}\SpecialCharTok{:}\FunctionTok{length}\NormalTok{(dens))}
+\CommentTok{\#}
+\FunctionTok{library}\NormalTok{(}\StringTok{"RColorBrewer"}\NormalTok{)}
+\FunctionTok{display.brewer.pal}\NormalTok{(}\AttributeTok{n =} \DecValTok{10}\NormalTok{, }\AttributeTok{name =} \StringTok{\textquotesingle{}RdBu\textquotesingle{}}\NormalTok{)}
+\DocumentationTok{\#\#\#  col=brewer.pal(n = 10, name = "RdBu")}
+\CommentTok{\#}
+\FunctionTok{plot}\NormalTok{(}\StringTok{"DATA DENSITY 2"}\NormalTok{, }\AttributeTok{xlim=}\FunctionTok{range}\NormalTok{(}\FunctionTok{sapply}\NormalTok{(dens, }\StringTok{"["}\NormalTok{, }\StringTok{"x"}\NormalTok{)), }\AttributeTok{ylim=}\FunctionTok{range}\NormalTok{(}\FunctionTok{sapply}\NormalTok{(dens, }\StringTok{"["}\NormalTok{, }\StringTok{"y"}\NormalTok{)))}
+\FunctionTok{mapply}\NormalTok{(lines, dens, }\AttributeTok{col=}\FunctionTok{brewer.pal}\NormalTok{(}\AttributeTok{n =} \DecValTok{10}\NormalTok{, }\AttributeTok{name =} \StringTok{"RdBu"}\NormalTok{))}
+\FunctionTok{legend}\NormalTok{(}\StringTok{"topright"}\NormalTok{, }\AttributeTok{legend=}\FunctionTok{names}\NormalTok{(dens), }\AttributeTok{fill=}\FunctionTok{brewer.pal}\NormalTok{(}\AttributeTok{n =} \DecValTok{10}\NormalTok{, }\AttributeTok{name =} \StringTok{"RdBu"}\NormalTok{))}
+
+\CommentTok{\# scatter plot}
+\FunctionTok{par}\NormalTok{(}\AttributeTok{oma=}\FunctionTok{c}\NormalTok{(}\DecValTok{3}\NormalTok{,}\FloatTok{0.5}\NormalTok{,}\FloatTok{0.5}\NormalTok{,}\FloatTok{0.5}\NormalTok{))}
+\FunctionTok{par}\NormalTok{(}\AttributeTok{mar=}\FunctionTok{c}\NormalTok{(}\DecValTok{5}\NormalTok{,}\DecValTok{4}\NormalTok{,}\DecValTok{2}\NormalTok{,}\DecValTok{2}\NormalTok{) }\SpecialCharTok{+}\FloatTok{0.1}\NormalTok{)}
+\FunctionTok{plot}\NormalTok{(}\FunctionTok{log2}\NormalTok{(normalized\_reads}\SpecialCharTok{+}\DecValTok{1}\NormalTok{)[,}\DecValTok{1}\NormalTok{] , }\FunctionTok{log2}\NormalTok{(normalized\_reads}\SpecialCharTok{+}\DecValTok{1}\NormalTok{)[,}\DecValTok{6}\NormalTok{] , }
+     \AttributeTok{main=}\StringTok{"Comparison resistant\_1 vs sensitive\_6"}\NormalTok{,}
+     \AttributeTok{xlab=}\StringTok{"log2(normReads+1)\_sample\_6"}\NormalTok{, }
+     \AttributeTok{ylab=}\StringTok{"log2(normReads+1)\_sample\_1"}\NormalTok{ , }\AttributeTok{col=}\StringTok{"red"}\NormalTok{)}
+\FunctionTok{points}\NormalTok{(}\FunctionTok{log2}\NormalTok{(normalized\_reads}\SpecialCharTok{+}\DecValTok{1}\NormalTok{)[,}\DecValTok{1}\NormalTok{] , }\FunctionTok{log2}\NormalTok{(normalized\_reads}\SpecialCharTok{+}\DecValTok{1}\NormalTok{)[,}\DecValTok{2}\NormalTok{] , }\AttributeTok{col=}\StringTok{"black"}\NormalTok{)}
+\FunctionTok{lines}\NormalTok{(}\FunctionTok{log2}\NormalTok{(normalized\_reads}\SpecialCharTok{+}\DecValTok{1}\NormalTok{)[,}\DecValTok{1}\NormalTok{] , }\FunctionTok{log2}\NormalTok{(normalized\_reads}\SpecialCharTok{+}\DecValTok{1}\NormalTok{)[,}\DecValTok{1}\NormalTok{] , }\AttributeTok{col=}\StringTok{"blue"}\NormalTok{)}
+
+\CommentTok{\# MA plot}
+\CommentTok{\# An MA{-}plot could also be represented, see: https://en.wikipedia.org/wiki/MA\_plot }
+\CommentTok{\# Plot M=Log2{-}FoldChange(Ratio) versus A=Log2{-}Concentration(AverageSignal), M versus A}
+\CommentTok{\# scatter plot of log2 fold changes (M, on y{-}axis) versus }
+\CommentTok{\#.                the average expression signal (A, on x{-}axis)}
+\CommentTok{\# M = log2(x/y) and A = (log2(x)+log2(y))/2 = log2(xy)*1/2}
+\CommentTok{\# See: https://www.sciencedirect.com/topics/biochemistry{-}genetics{-}and{-}molecular{-}biology/ma{-}plot}
+\CommentTok{\# See: https://rpkgs.datanovia.com/ggpubr/reference/ggmaplot.html}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics[width=\textwidth,height=4.16667in]{assets/d1.png}
+\includegraphics[width=\textwidth,height=4.16667in]{assets/d2.png}
+\includegraphics[width=6.25in,height=4.16667in]{assets/d3.png}
+
+We can also plot a heatmap to check how is it
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# As above it is better to select GENES with highest variability }
+\CommentTok{\# between the 2 conditions: res 1:5 ; sen 6:10}
+\FunctionTok{summary}\NormalTok{(}\FunctionTok{rowSds}\NormalTok{(}\FunctionTok{log2}\NormalTok{(normalized\_reads}\SpecialCharTok{+}\DecValTok{1}\NormalTok{)))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. }
+\NormalTok{ 0.1023  0.5545  0.8175  1.0608  1.3417  5.2158 }
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{gseMXnm }\OtherTok{\textless{}{-}} \FunctionTok{log2}\NormalTok{(normalized\_reads[,]}\SpecialCharTok{+}\DecValTok{1}\NormalTok{)}
+\FunctionTok{dim}\NormalTok{(gseMXnm)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{[1] 16949    10}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{table}\NormalTok{( }\FunctionTok{abs}\NormalTok{(}\FunctionTok{rowMeans}\NormalTok{(gseMXnm[,}\DecValTok{1}\SpecialCharTok{:}\DecValTok{5}\NormalTok{])}\SpecialCharTok{{-}}\FunctionTok{rowMeans}\NormalTok{(gseMXnm[,}\DecValTok{6}\SpecialCharTok{:}\DecValTok{10}\NormalTok{])) }\SpecialCharTok{\textgreater{}} \FloatTok{5.0}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{FALSE  TRUE }
+\NormalTok{16904    45 }
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{gseMXtopVn }\OtherTok{\textless{}{-}}\NormalTok{ gseMXlg[}\FunctionTok{abs}\NormalTok{(}\FunctionTok{rowMeans}\NormalTok{(gseMXnm[,}\DecValTok{1}\SpecialCharTok{:}\DecValTok{5}\NormalTok{])}\SpecialCharTok{{-}}\FunctionTok{rowMeans}\NormalTok{(gseMXnm[,}\DecValTok{6}\SpecialCharTok{:}\DecValTok{10}\NormalTok{]))}\SpecialCharTok{\textgreater{}}\FloatTok{5.0}\NormalTok{,]}
+
+\FunctionTok{par}\NormalTok{(}\AttributeTok{oma=}\FunctionTok{c}\NormalTok{(}\DecValTok{3}\NormalTok{,.}\DecValTok{5}\NormalTok{,.}\DecValTok{5}\NormalTok{,.}\DecValTok{5}\NormalTok{)) }\CommentTok{\# all sides have 3 lines of space (bottom, left, top, right)) }
+\CommentTok{\#}
+\FunctionTok{hmap}\NormalTok{(}\AttributeTok{set =}\NormalTok{ gseMXtopVn,}
+     \AttributeTok{scale =} \StringTok{\textquotesingle{}row\textquotesingle{}}\NormalTok{,}
+     \AttributeTok{tset =} \FunctionTok{t}\NormalTok{(gseMXtopVn),}
+     \AttributeTok{col =}\NormalTok{ col,}
+     \AttributeTok{colsidecolors =}\NormalTok{ colbars1,}
+     \AttributeTok{hcexRow =}\NormalTok{ .}\DecValTok{5}\NormalTok{,}
+     \AttributeTok{hcexCol =} \DecValTok{1}\NormalTok{,}
+     \AttributeTok{clustering =}\NormalTok{ T,}
+     \AttributeTok{main =} \StringTok{"Heatmap after normalization"}\NormalTok{)}
+\CommentTok{\#}
+\CommentTok{\#ALSO\# using ALL GENES (i.e. the whole gene set of 16904g) }
+\CommentTok{\# hmap(set = normalized\_reads,}
+\CommentTok{\#      scale = \textquotesingle{}row\textquotesingle{},}
+\CommentTok{\#      tset = t(normalized\_reads),}
+\CommentTok{\#      col = col,}
+\CommentTok{\#      colsidecolors = colbars1,}
+\CommentTok{\#      hcexRow = .5,}
+\CommentTok{\#      hcexCol = 1,}
+\CommentTok{\#      clustering = T,}
+\CommentTok{\#      main = "Heatmap after normalization")}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics[width=\textwidth,height=4.16667in]{assets/hmap11.png}
+
+\includegraphics[width=\textwidth,height=4.16667in]{assets/hmap21.png}
+
+\includegraphics[width=\textwidth,height=4.16667in]{assets/hmap31.png}
+
+After this we can perform differential expression. The first step is to
+create a DGEList object.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{pacman}\SpecialCharTok{::}\FunctionTok{p\_load}\NormalTok{(}\StringTok{"edgeR"}\NormalTok{)}
+\CommentTok{\# load("datafiles4de.Rdata")}
+\NormalTok{d0 }\OtherTok{\textless{}{-}} \FunctionTok{DGEList}\NormalTok{(normalized\_reads)}
+\NormalTok{d0}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{An object of class "DGEList"}
+\NormalTok{$counts}
+\NormalTok{                   resCRCc92 resCRCc93 resCRCc94 resCRCc95 resCRCc96}
+\NormalTok{ENSG00000000003.15    357.80    274.40     548.9    288.35    578.45}
+\NormalTok{ENSG00000000419.14    530.60    499.75     509.0    372.85    361.90}
+\NormalTok{ENSG00000000457.14    224.80    219.90     123.2     78.00    152.30}
+\NormalTok{ENSG00000000460.17    264.40    101.80     215.3    312.20    197.20}
+\NormalTok{ENSG00000001036.14    640.65    588.80     929.9    869.95    891.40}
+\NormalTok{                   senCRCc98 senCRCc99 senCRCc00 senCRCc01 senCRCc30}
+\NormalTok{ENSG00000000003.15    638.75     781.5     304.5     378.2     517.8}
+\NormalTok{ENSG00000000419.14   1168.40    1009.1     640.7     714.8     475.5}
+\NormalTok{ENSG00000000457.14    105.00     118.3      98.4     144.6     675.5}
+\NormalTok{ENSG00000000460.17    221.90     170.3     107.7     121.0     183.4}
+\NormalTok{ENSG00000001036.14    468.50     275.7     600.4    1102.4    1424.8}
+\NormalTok{16944 more rows ...}
+
+\NormalTok{$samples}
+\NormalTok{         group lib.size norm.factors}
+\NormalTok{resCRCc92     1 13029594            1}
+\NormalTok{resCRCc93     1 13029665            1}
+\NormalTok{resCRCc94     1 13029450            1}
+\NormalTok{resCRCc95     1 13029359            1}
+\NormalTok{resCRCc96     1 13029594            1}
+\NormalTok{senCRCc98     1 13029664            1}
+\NormalTok{senCRCc99     1 13029690            1}
+\NormalTok{senCRCc00     1 13029717            1}
+\NormalTok{senCRCc01     1 13029725            1}
+\NormalTok{senCRCc30     1 13029596            1}
+\end{Highlighting}
+\end{Shaded}
+
+\subsubsection{Install edgeR}\label{install-edger}
+
+First we calculate normalization factors. calcNormFactors doesn't
+normalize the data, it just calculates normalization factors for use
+downstream.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{d0 }\OtherTok{\textless{}{-}} \FunctionTok{calcNormFactors}\NormalTok{(d0)}
+\NormalTok{d0}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{An object of class "DGEList"}
+\NormalTok{$counts}
+\NormalTok{                  resCRCc92 resCRCc93 resCRCc94 resCRCc95 resCRCc96 senCRCc98 senCRCc99 senCRCc00 senCRCc01 senCRCc30}
+\NormalTok{ENSG00000000003.15    357.80    274.40     548.9    288.35    578.45    638.75     781.5     304.5     378.2     517.8}
+\NormalTok{ENSG00000000419.14    530.60    499.75     509.0    372.85    361.90   1168.40    1009.1     640.7     714.8     475.5}
+\NormalTok{ENSG00000000457.14    224.80    219.90     123.2     78.00    152.30    105.00     118.3      98.4     144.6     675.5}
+\NormalTok{ENSG00000000460.17    264.40    101.80     215.3    312.20    197.20    221.90     170.3     107.7     121.0     183.4}
+\NormalTok{ENSG00000001036.14    640.65    588.80     929.9    869.95    891.40    468.50     275.7     600.4    1102.4    1424.8}
+\NormalTok{ 16944 more rows ...}
+ 
+\NormalTok{ $samples}
+\NormalTok{           group lib.size norm.factors}
+\NormalTok{resCRCc92     1 13029594    1.0212406}
+\NormalTok{resCRCc93     1 13029665    1.0227475}
+\NormalTok{resCRCc94     1 13029450    0.9477376}
+\NormalTok{resCRCc95     1 13029359    0.9684974}
+\NormalTok{resCRCc96     1 13029594    1.0070091}
+\NormalTok{senCRCc98     1 13029664    1.0605930}
+\NormalTok{senCRCc99     1 13029690    1.0490547}
+\NormalTok{senCRCc00     1 13029717    0.9245159}
+\NormalTok{senCRCc01     1 13029725    0.9677416}
+\NormalTok{senCRCc30     1 13029596    1.0405498}
+\end{Highlighting}
+\end{Shaded}
+
+Next we will filter low expressed genes. ``Low-expressed'' is subjective
+and depends on the dataset.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{cutoff }\OtherTok{\textless{}{-}} \DecValTok{1}
+\NormalTok{drop }\OtherTok{\textless{}{-}} \FunctionTok{which}\NormalTok{(}\FunctionTok{apply}\NormalTok{(}\FunctionTok{cpm}\NormalTok{(d0), }\DecValTok{1}\NormalTok{, max) }\SpecialCharTok{\textless{}}\NormalTok{ cutoff)}
+\NormalTok{d }\OtherTok{\textless{}{-}}\NormalTok{ d0[}\SpecialCharTok{{-}}\NormalTok{drop,] }
+\FunctionTok{dim}\NormalTok{(d) }\CommentTok{\# number of genes left}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{[1] 16841    10}
+\end{Highlighting}
+\end{Shaded}
+
+We save our resistance data into a new variable
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{group }\OtherTok{\textless{}{-}}\NormalTok{ SummarizedExperiment}\SpecialCharTok{::}\FunctionTok{colData}\NormalTok{(gse\_final)[,}\StringTok{"cetuximab\_resistance"}\NormalTok{]}
+\NormalTok{group }\OtherTok{\textless{}{-}} \FunctionTok{as.factor}\NormalTok{(group)}
+\NormalTok{group}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{ [1] resistant resistant resistant resistant resistant sensitive sensitive}
+\NormalTok{ [8] sensitive sensitive sensitive}
+\NormalTok{Levels: resistant sensitive}
+\end{Highlighting}
+\end{Shaded}
+
+Next we can check Multidimensional scaling (MDS) plot
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{plotMDS}\NormalTok{(d, }\AttributeTok{col =} \FunctionTok{as.numeric}\NormalTok{(group), }\AttributeTok{labels=}\FunctionTok{colnames}\NormalTok{(d))}
+\FunctionTok{abline}\NormalTok{(}\AttributeTok{h=}\DecValTok{0}\NormalTok{,}\AttributeTok{col=}\StringTok{"grey"}\NormalTok{)}
+\FunctionTok{abline}\NormalTok{(}\AttributeTok{v=}\DecValTok{0}\NormalTok{,}\AttributeTok{col=}\StringTok{"grey"}\NormalTok{)}
+\CommentTok{\#}
+\FunctionTok{plotMDS}\NormalTok{(d, }\AttributeTok{col =} \FunctionTok{as.numeric}\NormalTok{(group) , }\AttributeTok{labels=} \FunctionTok{c}\NormalTok{(}\FunctionTok{rep}\NormalTok{(}\StringTok{"Res1"}\NormalTok{,}\DecValTok{5}\NormalTok{), }\FunctionTok{rep}\NormalTok{(}\StringTok{"Sen2"}\NormalTok{,}\DecValTok{5}\NormalTok{)) )}
+\FunctionTok{abline}\NormalTok{(}\AttributeTok{h=}\DecValTok{0}\NormalTok{,}\AttributeTok{col=}\StringTok{"grey"}\NormalTok{)}
+\FunctionTok{abline}\NormalTok{(}\AttributeTok{v=}\DecValTok{0}\NormalTok{,}\AttributeTok{col=}\StringTok{"grey"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics[width=\textwidth,height=4.16667in]{assets/mds1.png}
+\includegraphics[width=\textwidth,height=4.16667in]{assets/mds2.png}
+Next we will perform the voom transformation and the calculation of
+variance weigths. First, we specify the model to be fitted. We do this
+before using voom since voom uses variances of the model residuals
+(observed - fitted)
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{mm }\OtherTok{\textless{}{-}} \FunctionTok{model.matrix}\NormalTok{(}\SpecialCharTok{\textasciitilde{}}\DecValTok{0} \SpecialCharTok{+}\NormalTok{ group)}
+\NormalTok{mm}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{   groupresistant groupsensitive}
+\NormalTok{1               1              0}
+\NormalTok{2               1              0}
+\NormalTok{3               1              0}
+\NormalTok{4               1              0}
+\NormalTok{5               1              0}
+\NormalTok{6               0              1}
+\NormalTok{7               0              1}
+\NormalTok{8               0              1}
+\NormalTok{9               0              1}
+\NormalTok{10              0              1}
+\NormalTok{attr(,"assign")}
+\NormalTok{[1] 1 1}
+\NormalTok{attr(,"contrasts")}
+\NormalTok{attr(,"contrasts")$group}
+\NormalTok{[1] "contr.treatment"}
+\end{Highlighting}
+\end{Shaded}
+
+The above specifies a model where each coefficient corresponds to a
+group mean.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{y }\OtherTok{\textless{}{-}} \FunctionTok{voom}\NormalTok{(d, mm, }\AttributeTok{plot =}\NormalTok{ T)}
+\CommentTok{\# str(d)}
+\CommentTok{\# Formal class \textquotesingle{}DGEList\textquotesingle{} [package "edgeR"] with 1 slot}
+\CommentTok{\# ...}
+\CommentTok{\# str(y)}
+\CommentTok{\# Formal class \textquotesingle{}EList\textquotesingle{} [package "limma"] with 1 slot}
+\CommentTok{\# ...}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics[width=\textwidth,height=4.16667in]{assets/voom.png}
+
+What is voom doing?:
+
+Counts are transformed to log2 counts per million reads (CPM), where
+``per million reads'' is defined based on the normalization factors we
+calculated earlier. A linear model is fitted to the log2 CPM for each
+gene, and the residuals are calculated. A smoothed curve is fitted to
+the sqrt(residual standard deviation) by average expression (see red
+line in plot above). The smoothed curve is used to obtain weights for
+each gene and sample that are passed into limma along with the log2
+CPMs.
+
+Transform RNA-Seq Data Ready for Linear Modelling - voom(limma)
+Description: Transform count data to log2-counts per million (logCPM),
+estimate the mean-variance relationship and use this to compute
+appropriate observation-level weights. The data are then ready for
+linear modelling. Usage: voom(counts, design = NULL, lib.size = NULL,
+normalize.method = ``none'', block=NULL, correlation=NULL, weights=NULL,
+span=0.5, plot=FALSE, save.plot=FALSE)
+
+More details at
+\url{https://genomebiology.biomedcentral.com/articles/10.1186/gb-2014-15-2-r29}
+
+The above is a ``good'' voom plot. If your voom plot looks like the
+below, you might want to filter more:
+\includegraphics[width=\textwidth,height=4.6875in]{assets/badvoom.png}
+
+The next step is fitting linear models in limma
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{fit }\OtherTok{\textless{}{-}} \FunctionTok{lmFit}\NormalTok{(y, mm)}
+\FunctionTok{head}\NormalTok{(}\FunctionTok{coef}\NormalTok{(fit))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{                   groupresistant groupsensitive}
+\NormalTok{ENSG00000000003.15       4.912634       5.244523}
+\NormalTok{ENSG00000000419.14       5.117968       5.861404}
+\NormalTok{ENSG00000000457.14       3.534570       3.658691}
+\NormalTok{ENSG00000000460.17       3.980055       3.579782}
+\NormalTok{ENSG00000001036.14       5.896456       5.643019}
+\NormalTok{ENSG00000001084.13       5.522446       5.558454}
+\end{Highlighting}
+\end{Shaded}
+
+Specify which groups to compare, in this case we only have two groups:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{contr }\OtherTok{\textless{}{-}} \FunctionTok{makeContrasts}\NormalTok{(groupresistant }\SpecialCharTok{{-}}\NormalTok{ groupsensitive, }\AttributeTok{levels =} \FunctionTok{colnames}\NormalTok{(}\FunctionTok{coef}\NormalTok{(fit)))}
+\NormalTok{contr}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{                Contrasts}
+\NormalTok{Levels           groupresistant {-} groupsensitive}
+\NormalTok{  groupresistant                               1}
+\NormalTok{  groupsensitive                              {-}1}
+\end{Highlighting}
+\end{Shaded}
+
+Estimate contrast for each gene
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{tmp }\OtherTok{\textless{}{-}} \FunctionTok{contrasts.fit}\NormalTok{(fit, contr)}
+\end{Highlighting}
+\end{Shaded}
+
+Empirical Bayes smoothing of standard errors (shrinks standard errors
+that are much larger or smaller than those from other genes towards the
+average standard error) (see
+\url{https://www.degruyter.com/doi/10.2202/1544-6115.1027})
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{tmp }\OtherTok{\textless{}{-}} \FunctionTok{eBayes}\NormalTok{(tmp)}
+\end{Highlighting}
+\end{Shaded}
+
+\subsubsection{Calculate genes differential
+expression}\label{calculate-genes-differential-expression}
+
+What genes are most differentially expressed?
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{top.table }\OtherTok{\textless{}{-}} \FunctionTok{topTable}\NormalTok{(tmp, }\AttributeTok{sort.by =} \StringTok{"P"}\NormalTok{, }\AttributeTok{n =} \ConstantTok{Inf}\NormalTok{)}
+\FunctionTok{head}\NormalTok{(top.table, }\DecValTok{12}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{                      logFC    AveExpr          t      P.Value   adj.P.Val        B}
+\NormalTok{ENSG00000203326.12 {-}5.326225  1.3613344 {-}10.420240 3.353797e{-}07 0.004806267 5.239035}
+\NormalTok{ENSG00000152454.4  {-}6.981008 {-}0.5013794  {-}9.902006 5.707817e{-}07 0.004806267 3.769613}
+\NormalTok{ENSG00000101350.8  {-}1.912930  5.4157087  {-}7.967949 5.158249e{-}06 0.022663509 4.522696}
+\NormalTok{ENSG00000126016.17 {-}3.104801  1.8910262  {-}7.616063 8.028315e{-}06 0.022663509 3.662323}
+\NormalTok{ENSG00000167969.13  1.421662  6.1516331   7.454415 9.884862e{-}06 0.022663509 3.879928}
+\NormalTok{ENSG00000284820.1   2.612561  3.2486898   7.453225 9.900133e{-}06 0.022663509 3.778867}
+\NormalTok{ENSG00000120708.17 {-}3.215962  6.4754734  {-}7.409695 1.047618e{-}05 0.022663509 3.826789}
+\NormalTok{ENSG00000257743.8  {-}6.661798  1.3545749  {-}7.315782 1.184490e{-}05 0.022663509 2.751184}
+\NormalTok{ENSG00000235369.1  {-}5.716545 {-}1.1380723  {-}7.298839 1.211161e{-}05 0.022663509 2.100126}
+\NormalTok{ENSG00000164120.14  5.880574 {-}0.6102387   7.180184 1.416943e{-}05 0.023599080 2.066891}
+\NormalTok{ENSG00000148426.13 {-}7.908004  0.5007634  {-}7.074403 1.632093e{-}05 0.023599080 2.121491}
+\NormalTok{ENSG00000274419.6  {-}6.480710 {-}0.7546451  {-}7.048084 1.690884e{-}05 0.023599080 1.978881}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+logFC: log2 fold change of resistant/sensitive
+AveExpr: Average expression across all samples, in log2 CPM
+t: logFC divided by its standard error
+P.Value: Raw p-value (based on t) from test that logFC differs from 0
+adj.P.Val: Benjamini-Hochberg false discovery rate adjusted p-value
+B: log-odds that gene is DE (arguably less useful than the other columns)
+\end{verbatim}
+
+ENSG00000203326 gene will be more expressed in sensitive samples because
+the logFC is negative. ENSG00000284820 gene will be more expressed in
+resistant samples.
+
+How many DE genes are there?
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{length}\NormalTok{(}\FunctionTok{which}\NormalTok{(top.table}\SpecialCharTok{$}\NormalTok{adj.P.Val }\SpecialCharTok{\textless{}} \FloatTok{0.05}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{[1] 74}
+\end{Highlighting}
+\end{Shaded}
+
+Let us now plot 2 GENES in both conditions, each with the highest pvalue
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# We need to have installed \& charged in R this packages }
+\NormalTok{pacman}\SpecialCharTok{::}\FunctionTok{p\_load}\NormalTok{(ggplot2, tidyverse, ggpubr)}
+\NormalTok{pacman}\SpecialCharTok{::}\FunctionTok{p\_load}\NormalTok{(reshape2)}
+\CommentTok{\#}
+\FunctionTok{rownames}\NormalTok{(normalized\_reads) }\OtherTok{\textless{}{-}} \FunctionTok{gsub}\NormalTok{(}\StringTok{"}\SpecialCharTok{\textbackslash{}\textbackslash{}}\StringTok{..*"}\NormalTok{, }\StringTok{""}\NormalTok{, }\FunctionTok{rownames}\NormalTok{(normalized\_reads))}
+\FunctionTok{head}\NormalTok{(normalized\_reads, }\DecValTok{5}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{                resCRCc92 resCRCc93 resCRCc94 resCRCc95 resCRCc96}
+\NormalTok{ENSG00000000003    357.80    274.40     548.9    288.35    578.45}
+\NormalTok{ENSG00000000419    530.60    499.75     509.0    372.85    361.90}
+\NormalTok{ENSG00000000457    224.80    219.90     123.2     78.00    152.30}
+\NormalTok{ENSG00000000460    264.40    101.80     215.3    312.20    197.20}
+\NormalTok{ENSG00000001036    640.65    588.80     929.9    869.95    891.40}
+\NormalTok{                senCRCc98 senCRCc99 senCRCc00 senCRCc01 senCRCc30}
+\NormalTok{ENSG00000000003    638.75     781.5     304.5     378.2     517.8}
+\NormalTok{ENSG00000000419   1168.40    1009.1     640.7     714.8     475.5}
+\NormalTok{ENSG00000000457    105.00     118.3      98.4     144.6     675.5}
+\NormalTok{ENSG00000000460    221.90     170.3     107.7     121.0     183.4}
+\NormalTok{ENSG00000001036    468.50     275.7     600.4    1102.4    1424.8}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{data\_to\_plot }\OtherTok{\textless{}{-}}\NormalTok{ normalized\_reads[}\FunctionTok{rownames}\NormalTok{(normalized\_reads) }\SpecialCharTok{\%in\%} 
+                        \FunctionTok{c}\NormalTok{(}\StringTok{"ENSG00000152454"}\NormalTok{, }\StringTok{"ENSG00000164120"}\NormalTok{),] }\SpecialCharTok{\%\textgreater{}\%}\NormalTok{ reshape2}\SpecialCharTok{::}\FunctionTok{melt}\NormalTok{()}
+\NormalTok{data\_to\_plot}\SpecialCharTok{$}\NormalTok{group }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\FunctionTok{rep}\NormalTok{(}\StringTok{"resistant"}\NormalTok{, }\DecValTok{10}\NormalTok{), }\FunctionTok{rep}\NormalTok{(}\StringTok{"sensitive"}\NormalTok{, }\DecValTok{10}\NormalTok{))}
+\FunctionTok{colnames}\NormalTok{(data\_to\_plot) }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\StringTok{"gene"}\NormalTok{, }\StringTok{"sample"}\NormalTok{, }\StringTok{"value"}\NormalTok{, }\StringTok{"group"}\NormalTok{)}
+\NormalTok{data\_to\_plot}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{              gene    sample  value     group}
+\NormalTok{1  ENSG00000152454 resCRCc92   0.10 resistant}
+\NormalTok{2  ENSG00000164120 resCRCc92  31.40 resistant}
+\NormalTok{3  ENSG00000152454 resCRCc93   0.00 resistant}
+\NormalTok{4  ENSG00000164120 resCRCc93  71.40 resistant}
+\NormalTok{5  ENSG00000152454 resCRCc94   0.30 resistant}
+\NormalTok{6  ENSG00000164120 resCRCc94 137.20 resistant}
+\NormalTok{7  ENSG00000152454 resCRCc95   1.00 resistant}
+\NormalTok{8  ENSG00000164120 resCRCc95  63.90 resistant}
+\NormalTok{9  ENSG00000152454 resCRCc96   0.50 resistant}
+\NormalTok{10 ENSG00000164120 resCRCc96  57.70 resistant}
+\NormalTok{11 ENSG00000152454 senCRCc98 187.70 sensitive}
+\NormalTok{12 ENSG00000164120 senCRCc98   1.20 sensitive}
+\NormalTok{13 ENSG00000152454 senCRCc99 112.40 sensitive}
+\NormalTok{14 ENSG00000164120 senCRCc99   1.20 sensitive}
+\NormalTok{15 ENSG00000152454 senCRCc00  94.55 sensitive}
+\NormalTok{16 ENSG00000164120 senCRCc00   1.00 sensitive}
+\NormalTok{17 ENSG00000152454 senCRCc01  68.00 sensitive}
+\NormalTok{18 ENSG00000164120 senCRCc01   0.30 sensitive}
+\NormalTok{19 ENSG00000152454 senCRCc30  87.15 sensitive}
+\NormalTok{20 ENSG00000164120 senCRCc30   0.00 sensitive}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Plot 2 top genes: ENSG00000152454 = ZNF256 and ENSG00000164120 = HPGD}
+\FunctionTok{ggplot}\NormalTok{() }\SpecialCharTok{+}
+  \FunctionTok{geom\_tile}\NormalTok{(}\AttributeTok{data =}\NormalTok{ data\_to\_plot, }\FunctionTok{aes}\NormalTok{(}\AttributeTok{x =}\NormalTok{ sample, }\AttributeTok{y =} \SpecialCharTok{{-}}\DecValTok{1}\NormalTok{, }\AttributeTok{height =}\NormalTok{ .}\DecValTok{5}\NormalTok{, }\AttributeTok{fill =}\NormalTok{ group)) }\SpecialCharTok{+}
+  \FunctionTok{scale\_fill\_manual}\NormalTok{(}\AttributeTok{values =} \FunctionTok{c}\NormalTok{(}\StringTok{"black"}\NormalTok{, }\StringTok{"grey"}\NormalTok{)) }\SpecialCharTok{+}
+  \FunctionTok{geom\_line}\NormalTok{(}\AttributeTok{data =}\NormalTok{ data\_to\_plot }\SpecialCharTok{\%\textgreater{}\%} \FunctionTok{filter}\NormalTok{(gene }\SpecialCharTok{\%in\%} \StringTok{"ENSG00000152454"}\NormalTok{),}
+            \FunctionTok{aes}\NormalTok{(}\AttributeTok{x =}\NormalTok{ sample, }\AttributeTok{y =} \FunctionTok{log2}\NormalTok{(value}\SpecialCharTok{+}\DecValTok{1}\NormalTok{), }\AttributeTok{group =}\NormalTok{ group, }\AttributeTok{color =}\NormalTok{ gene)) }\SpecialCharTok{+}
+  \FunctionTok{geom\_line}\NormalTok{(}\AttributeTok{data =}\NormalTok{ data\_to\_plot }\SpecialCharTok{\%\textgreater{}\%} \FunctionTok{filter}\NormalTok{(gene }\SpecialCharTok{\%in\%} \StringTok{"ENSG00000164120"}\NormalTok{),}
+            \FunctionTok{aes}\NormalTok{(}\AttributeTok{x =}\NormalTok{ sample, }\AttributeTok{y =} \FunctionTok{log2}\NormalTok{(value}\SpecialCharTok{+}\DecValTok{1}\NormalTok{), }\AttributeTok{group =}\NormalTok{ group, }\AttributeTok{color =}\NormalTok{ gene)) }\SpecialCharTok{+}
+  
+  \FunctionTok{geom\_point}\NormalTok{(}\AttributeTok{data=}\NormalTok{data\_to\_plot, }\FunctionTok{aes}\NormalTok{(}\AttributeTok{x=}\NormalTok{sample, }\AttributeTok{y=}\FunctionTok{log2}\NormalTok{(value}\SpecialCharTok{+}\DecValTok{1}\NormalTok{), }\AttributeTok{group=}\NormalTok{group, }\AttributeTok{color=}\NormalTok{gene)) }\SpecialCharTok{+}
+  \CommentTok{\# Labels added}
+  \FunctionTok{xlab}\NormalTok{(}\StringTok{""}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{ylab}\NormalTok{(}\StringTok{"Normalized Reads log2(expr+1)"}\NormalTok{) }\SpecialCharTok{+}
+  \CommentTok{\# Adding the title}
+  \FunctionTok{labs}\NormalTok{(}\AttributeTok{title =} \StringTok{"Signal of 2 GENES diff. express. in Resistant v Sensitive"}\NormalTok{) }\SpecialCharTok{+}
+  \CommentTok{\# Setting the theme to minimal so it can be customized to the desired style}
+  \FunctionTok{theme\_minimal}\NormalTok{(}\AttributeTok{base\_size =} \DecValTok{9}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{theme}\NormalTok{(}\AttributeTok{text             =} \FunctionTok{element\_text}\NormalTok{(}\AttributeTok{size =} \DecValTok{10}\NormalTok{),}
+        \AttributeTok{panel.background =} \FunctionTok{element\_rect}\NormalTok{(}\AttributeTok{fill =} \StringTok{\textquotesingle{}white\textquotesingle{}}\NormalTok{),}
+        \AttributeTok{panel.grid.major =} \FunctionTok{element\_line}\NormalTok{(}\AttributeTok{colour =} \StringTok{"grey"}\NormalTok{, }\AttributeTok{size =}\NormalTok{ .}\DecValTok{2}\NormalTok{),}
+        \AttributeTok{panel.grid.minor =} \FunctionTok{element\_line}\NormalTok{(}\AttributeTok{colour =} \StringTok{"grey"}\NormalTok{, }\AttributeTok{size =}\NormalTok{ .}\DecValTok{2}\NormalTok{),}
+        \AttributeTok{legend.position  =} \StringTok{\textquotesingle{}bottom\textquotesingle{}}\NormalTok{,}
+        \AttributeTok{legend.text      =} \FunctionTok{element\_text}\NormalTok{(}\AttributeTok{size =} \DecValTok{8}\NormalTok{),}
+        \AttributeTok{legend.title     =} \FunctionTok{element\_text}\NormalTok{(}\AttributeTok{size =} \DecValTok{10}\NormalTok{),}
+        \AttributeTok{plot.title       =} \FunctionTok{element\_text}\NormalTok{(}\AttributeTok{size =} \DecValTok{14}\NormalTok{, }\AttributeTok{face =} \StringTok{"bold"}\NormalTok{),}
+        \AttributeTok{plot.subtitle    =} \FunctionTok{element\_text}\NormalTok{(}\AttributeTok{size =} \DecValTok{12}\NormalTok{, }\AttributeTok{face =} \StringTok{"italic"}\NormalTok{, }\AttributeTok{color =} \StringTok{"black"}\NormalTok{),}
+        \AttributeTok{axis.text.x      =} \FunctionTok{element\_text}\NormalTok{(}\AttributeTok{angle =} \DecValTok{90}\NormalTok{),}
+        \AttributeTok{axis.title.y     =} \FunctionTok{element\_text}\NormalTok{(}\AttributeTok{size =} \DecValTok{12}\NormalTok{, }\AttributeTok{margin =} \FunctionTok{margin}\NormalTok{(}\AttributeTok{t =} \DecValTok{0}\NormalTok{, }\AttributeTok{r =} \DecValTok{20}\NormalTok{, }\AttributeTok{b =} \DecValTok{0}\NormalTok{, }\AttributeTok{l =} \DecValTok{0}\NormalTok{)),}
+        \AttributeTok{axis.title.x     =} \FunctionTok{element\_text}\NormalTok{(}\AttributeTok{size =} \DecValTok{12}\NormalTok{, }\AttributeTok{margin =} \FunctionTok{margin}\NormalTok{(}\AttributeTok{t =} \DecValTok{20}\NormalTok{, }\AttributeTok{r =} \DecValTok{0}\NormalTok{, }\AttributeTok{b =} \DecValTok{0}\NormalTok{, }\AttributeTok{l =} \DecValTok{0}\NormalTok{)))}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics[width=\textwidth,height=4.16667in]{assets/df_genes.png}
+
+Write top.table to a file
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{top.table}\SpecialCharTok{$}\NormalTok{Gene }\OtherTok{\textless{}{-}} \FunctionTok{rownames}\NormalTok{(top.table)}
+\NormalTok{top.table }\OtherTok{\textless{}{-}}\NormalTok{ top.table[,}\FunctionTok{c}\NormalTok{(}\StringTok{"Gene"}\NormalTok{, }\FunctionTok{names}\NormalTok{(top.table)[}\DecValTok{1}\SpecialCharTok{:}\DecValTok{6}\NormalTok{])]}
+\FunctionTok{write.table}\NormalTok{(top.table, }\AttributeTok{file =} \StringTok{"output/resistant\_v\_sensitive\_gene\_expr.txt"}\NormalTok{, }
+            \AttributeTok{row.names =}\NormalTok{ F, }\AttributeTok{sep =} \StringTok{"}\SpecialCharTok{\textbackslash{}t}\StringTok{"}\NormalTok{, }\AttributeTok{quote =}\NormalTok{ F)}
+\end{Highlighting}
+\end{Shaded}
+
+Write top.table to a file but now adding GENEs INFORMATION
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Adding gene information with biomart}
+\NormalTok{pacman}\SpecialCharTok{::}\FunctionTok{p\_load}\NormalTok{(biomaRt)}
+\NormalTok{mart.hs }\OtherTok{\textless{}{-}} \FunctionTok{useMart}\NormalTok{(}\StringTok{"ensembl"}\NormalTok{, }\StringTok{"hsapiens\_gene\_ensembl"}\NormalTok{, }\AttributeTok{host =} \StringTok{"https://www.ensembl.org"}\NormalTok{)}
+\FunctionTok{View}\NormalTok{(}\FunctionTok{listAttributes}\NormalTok{(mart.hs))}
+
+\CommentTok{\# The query we are going to search are the ENSG without the .xx}
+\NormalTok{query1 }\OtherTok{\textless{}{-}}\NormalTok{ top.table}\SpecialCharTok{$}\NormalTok{Gene}
+\NormalTok{query1 }\OtherTok{\textless{}{-}} \FunctionTok{gsub}\NormalTok{(}\StringTok{"}\SpecialCharTok{\textbackslash{}\textbackslash{}}\StringTok{..*"}\NormalTok{, }\StringTok{""}\NormalTok{, top.table}\SpecialCharTok{$}\NormalTok{Gene)}
+\CommentTok{\#}
+\NormalTok{query\_res }\OtherTok{\textless{}{-}} \FunctionTok{getBM}\NormalTok{(}\AttributeTok{attributes =} \FunctionTok{c}\NormalTok{(}\StringTok{\textquotesingle{}ensembl\_gene\_id\textquotesingle{}}\NormalTok{, }\StringTok{\textquotesingle{}hgnc\_symbol\textquotesingle{}}\NormalTok{, }\StringTok{\textquotesingle{}description\textquotesingle{}}\NormalTok{), }
+                   \AttributeTok{filters =} \StringTok{\textquotesingle{}ensembl\_gene\_id\textquotesingle{}}\NormalTok{, }\AttributeTok{values =}\NormalTok{ query1, }\AttributeTok{mart =}\NormalTok{ mart.hs)}
+\CommentTok{\#}
+\NormalTok{top.table}\SpecialCharTok{$}\NormalTok{ensg         }\OtherTok{\textless{}{-}}\NormalTok{ query1}
+\NormalTok{top.table}\SpecialCharTok{$}\NormalTok{symbol       }\OtherTok{\textless{}{-}}\NormalTok{ query\_res}\SpecialCharTok{$}\NormalTok{hgnc\_symbol[}\FunctionTok{match}\NormalTok{(top.table}\SpecialCharTok{$}\NormalTok{ensg, query\_res}\SpecialCharTok{$}\NormalTok{ensembl\_gene\_id)]}
+\NormalTok{top.table}\SpecialCharTok{$}\NormalTok{descripction }\OtherTok{\textless{}{-}}\NormalTok{ query\_res}\SpecialCharTok{$}\NormalTok{description[}\FunctionTok{match}\NormalTok{(top.table}\SpecialCharTok{$}\NormalTok{ensg, query\_res}\SpecialCharTok{$}\NormalTok{ensembl\_gene\_id)]}
+
+\NormalTok{top.tableF }\OtherTok{\textless{}{-}}\NormalTok{ top.table[,}\FunctionTok{c}\NormalTok{(}\DecValTok{8}\NormalTok{,}\DecValTok{9}\NormalTok{,}\DecValTok{2}\SpecialCharTok{:}\DecValTok{7}\NormalTok{,}\DecValTok{10}\NormalTok{)]}
+\FunctionTok{rownames}\NormalTok{(top.tableF) }\OtherTok{\textless{}{-}}\NormalTok{ top.tableF}\SpecialCharTok{$}\NormalTok{ensg}
+\CommentTok{\#}
+\FunctionTok{write.table}\NormalTok{(top.tableF, }\AttributeTok{file =} \StringTok{"output/resistant\_v\_sensitive\_gene\_exprINFO.txt"}\NormalTok{, }
+            \AttributeTok{row.names =}\NormalTok{ F, }\AttributeTok{sep =} \StringTok{"}\SpecialCharTok{\textbackslash{}t}\StringTok{"}\NormalTok{, }\AttributeTok{quote =}\NormalTok{ F)}
+\FunctionTok{head}\NormalTok{(top.tableF, }\DecValTok{7}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{                                 Gene     logFC    AveExpr          t      P.Value   adj.P.Val        B            ensg symbol}
+\NormalTok{ENSG00000203326.12 ENSG00000203326.12 {-}5.326225  1.3613344 {-}10.420240 3.353797e{-}07 0.004806267 5.239035 ENSG00000203326 ZNF525}
+\NormalTok{ENSG00000152454.4   ENSG00000152454.4 {-}6.981008 {-}0.5013794  {-}9.902006 5.707817e{-}07 0.004806267 3.769613 ENSG00000152454 ZNF256}
+\NormalTok{ENSG00000101350.8   ENSG00000101350.8 {-}1.912930  5.4157087  {-}7.967949 5.158249e{-}06 0.022663509 4.522696 ENSG00000101350  KIF3B}
+\NormalTok{ENSG00000126016.17 ENSG00000126016.17 {-}3.104801  1.8910262  {-}7.616063 8.028315e{-}06 0.022663509 3.662323 ENSG00000126016   AMOT}
+\NormalTok{ENSG00000167969.13 ENSG00000167969.13  1.421662  6.1516331   7.454415 9.884862e{-}06 0.022663509 3.879928 ENSG00000167969   ECI1}
+\NormalTok{ENSG00000284820.1   ENSG00000284820.1  2.612561  3.2486898   7.453225 9.900133e{-}06 0.022663509 3.778867 ENSG00000284820}
+\NormalTok{ENSG00000120708.17 ENSG00000120708.17 {-}3.215962  6.4754734  {-}7.409695 1.047618e{-}05 0.022663509 3.826789 ENSG00000120708  TGFBI}
+\NormalTok{                                                                                  descripction}
+\NormalTok{ENSG00000203326.12                 zinc finger protein 525 [Source:HGNC Symbol;Acc:HGNC:29423]}
+\NormalTok{ENSG00000152454.4                  zinc finger protein 256 [Source:HGNC Symbol;Acc:HGNC:13049]}
+\NormalTok{ENSG00000101350.8                  kinesin family member 3B [Source:HGNC Symbol;Acc:HGNC:6320]}
+\NormalTok{ENSG00000126016.17                              angiomotin [Source:HGNC Symbol;Acc:HGNC:17810]}
+\NormalTok{ENSG00000167969.13              enoyl{-}CoA delta isomerase 1 [Source:HGNC Symbol;Acc:HGNC:2703]}
+\NormalTok{ENSG00000284820.1                                                                novel protein}
+\NormalTok{ENSG00000120708.17 transforming growth factor beta induced [Source:HGNC Symbol;Acc:HGNC:11771]}
+\end{Highlighting}
+\end{Shaded}
+
+Plot a volcano plot of the results
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Use tmp[12312,] to see the values of the genes plotted}
+\FunctionTok{volcanoplot}\NormalTok{(tmp, }
+            \AttributeTok{coef =} \DecValTok{1}\NormalTok{, }
+            \AttributeTok{style =} \StringTok{"p{-}value"}\NormalTok{, }
+            \AttributeTok{highlight =} \DecValTok{74}\NormalTok{,  }\CommentTok{\# We hightlight the 74 significant genes }
+            \AttributeTok{names =} \FunctionTok{seq}\NormalTok{(}\DecValTok{1}\NormalTok{, }\FunctionTok{nrow}\NormalTok{(tmp}\SpecialCharTok{$}\NormalTok{coefficients)),}
+            \AttributeTok{hl.col =} \StringTok{"red"}\NormalTok{,}
+            \AttributeTok{xlab =} \StringTok{"Log2 Fold Change"}\NormalTok{, }
+            \AttributeTok{ylab =} \ConstantTok{NULL}\NormalTok{, }
+            \AttributeTok{pch =} \DecValTok{16}\NormalTok{, }
+            \AttributeTok{cex =} \FloatTok{0.35}\NormalTok{)}
+\CommentTok{\#}
+\FunctionTok{abline}\NormalTok{(}\AttributeTok{h=}\DecValTok{0}\NormalTok{,}\AttributeTok{col=}\StringTok{"grey"}\NormalTok{)}
+\FunctionTok{abline}\NormalTok{(}\AttributeTok{v=}\DecValTok{0}\NormalTok{,}\AttributeTok{col=}\StringTok{"grey"}\NormalTok{)}
+\DocumentationTok{\#\#\#  {-}log10(0.05)}
+\CommentTok{\# [1] 1.30103}
+\DocumentationTok{\#\#\#  abline(h=1.30103,col="red")}
+\DocumentationTok{\#\#\#  {-}log10(0.000233)}
+\CommentTok{\# [1] 3.632644}
+\FunctionTok{abline}\NormalTok{(}\AttributeTok{h=}\FloatTok{3.632644}\NormalTok{,}\AttributeTok{col=}\StringTok{"red"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics[width=\textwidth,height=4.16667in]{assets/volcano_plot.png}
+
+And a heatmap of the significant genes
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{significant\_genes }\OtherTok{\textless{}{-}}\NormalTok{ top.table}\SpecialCharTok{$}\NormalTok{Gene[top.table}\SpecialCharTok{$}\NormalTok{adj.P.Val }\SpecialCharTok{\textless{}} \FloatTok{0.05}\NormalTok{]}
+\NormalTok{significant\_genes}\OtherTok{\textless{}{-}} \FunctionTok{gsub}\NormalTok{(}\StringTok{"}\SpecialCharTok{\textbackslash{}\textbackslash{}}\StringTok{..*"}\NormalTok{, }\StringTok{""}\NormalTok{, significant\_genes)}
+
+\NormalTok{signifcant\_normalized\_reads }\OtherTok{\textless{}{-}}\NormalTok{ normalized\_reads[}\FunctionTok{rownames}\NormalTok{(normalized\_reads) }\SpecialCharTok{\%in\%} 
+\NormalTok{                                                  significant\_genes,]}
+\FunctionTok{dim}\NormalTok{(signifcant\_normalized\_reads)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{[1] 74 10}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# source(\textquotesingle{}hmap.R\textquotesingle{})}
+\CommentTok{\# pacman::p\_load(RColorBrewer, gplots, dendextend)}
+\CommentTok{\# col \textless{}{-} brewer.pal(11,"RdBu")}
+\CommentTok{\# col \textless{}{-} rev(col)}
+\CommentTok{\# colbars1 \textless{}{-} c(rep("\#005AB5" ,5), rep("\#DC3220",5))}
+\CommentTok{\#}
+\FunctionTok{hmap}\NormalTok{(}\AttributeTok{set =}\NormalTok{ signifcant\_normalized\_reads,}
+     \AttributeTok{scale =} \StringTok{\textquotesingle{}row\textquotesingle{}}\NormalTok{,}
+     \AttributeTok{tset =} \FunctionTok{t}\NormalTok{(signifcant\_normalized\_reads),}
+     \AttributeTok{col =}\NormalTok{ col,}
+     \AttributeTok{colsidecolors =}\NormalTok{ colbars1,}
+     \AttributeTok{hcexRow =}\NormalTok{ .}\DecValTok{5}\NormalTok{,}
+     \AttributeTok{hcexCol =}\NormalTok{ .}\DecValTok{8}\NormalTok{,}
+     \AttributeTok{clustering =}\NormalTok{ T,}
+     \AttributeTok{main =} \StringTok{"Heatmap 74 DEgenes {-} Resistant\_v\_Sensitive"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics[width=\textwidth,height=4.16667in]{assets/hmapf1.png}
+\includegraphics[width=\textwidth,height=4.16667in]{assets/hmapf2.png}
+\includegraphics[width=\textwidth,height=4.16667in]{assets/hmapf.png}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{sessionInfo}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{R version 4.2.1 (2022{-}06{-}23)}
+\NormalTok{Platform: x86\_64{-}pc{-}linux{-}gnu (64{-}bit)}
+\NormalTok{Running under: Ubuntu 20.04.5 LTS}
+
+\NormalTok{Matrix products: default}
+\NormalTok{BLAS:   /usr/lib/x86\_64{-}linux{-}gnu/blas/libblas.so.3.9.0}
+\NormalTok{LAPACK: /usr/lib/x86\_64{-}linux{-}gnu/lapack/liblapack.so.3.9.0}
+
+\NormalTok{locale:}
+\NormalTok{ [1] LC\_CTYPE=es\_ES.UTF{-}8       LC\_NUMERIC=C              }
+\NormalTok{ [3] LC\_TIME=es\_ES.UTF{-}8        LC\_COLLATE=es\_ES.UTF{-}8    }
+\NormalTok{ [5] LC\_MONETARY=es\_ES.UTF{-}8    LC\_MESSAGES=es\_ES.UTF{-}8   }
+\NormalTok{ [7] LC\_PAPER=es\_ES.UTF{-}8       LC\_NAME=C                 }
+\NormalTok{ [9] LC\_ADDRESS=C               LC\_TELEPHONE=C            }
+\NormalTok{[11] LC\_MEASUREMENT=es\_ES.UTF{-}8 LC\_IDENTIFICATION=C       }
+
+\NormalTok{attached base packages:}
+\NormalTok{[1] stats4    stats     graphics  grDevices utils     datasets  methods  }
+\NormalTok{[8] base     }
+
+\NormalTok{other attached packages:}
+\NormalTok{ [1] biomaRt\_2.52.0              SummarizedExperiment\_1.26.1}
+\NormalTok{ [3] Biobase\_2.56.0              GenomicRanges\_1.48.0       }
+\NormalTok{ [5] GenomeInfoDb\_1.32.4         IRanges\_2.30.1             }
+\NormalTok{ [7] MatrixGenerics\_1.8.1        matrixStats\_0.62.0         }
+\NormalTok{ [9] edgeR\_3.38.4                limma\_3.52.4               }
+\NormalTok{[11] S4Vectors\_0.34.0            BiocGenerics\_0.42.0        }
+
+\NormalTok{loaded via a namespace (and not attached):}
+\NormalTok{ [1] Rcpp\_1.0.9             locfit\_1.5{-}9.6         lattice\_0.20{-}45       }
+\NormalTok{ [4] prettyunits\_1.1.1      png\_0.1{-}7              Biostrings\_2.64.1     }
+\NormalTok{ [7] assertthat\_0.2.1       digest\_0.6.30          utf8\_1.2.2            }
+\NormalTok{[10] BiocFileCache\_2.4.0    R6\_2.5.1               evaluate\_0.17         }
+\NormalTok{[13] RSQLite\_2.2.18         httr\_1.4.4             ggplot2\_3.3.6         }
+\NormalTok{[16] pillar\_1.8.1           zlibbioc\_1.42.0        rlang\_1.0.6           }
+\NormalTok{[19] progress\_1.2.2         curl\_4.3.3             rstudioapi\_0.14       }
+\NormalTok{[22] blob\_1.2.3             Matrix\_1.5{-}1           rmarkdown\_2.17        }
+\NormalTok{[25] stringr\_1.4.1          RCurl\_1.98{-}1.9         bit\_4.0.4             }
+\NormalTok{[28] munsell\_0.5.0          DelayedArray\_0.22.0    xfun\_0.34             }
+\NormalTok{[31] compiler\_4.2.1         pkgconfig\_2.0.3        htmltools\_0.5.3       }
+\NormalTok{[34] tidyselect\_1.2.0       KEGGREST\_1.36.3        tibble\_3.1.8          }
+\NormalTok{[37] GenomeInfoDbData\_1.2.8 XML\_3.99{-}0.11          fansi\_1.0.3           }
+\NormalTok{[40] crayon\_1.5.2           dplyr\_1.0.10           dbplyr\_2.2.1          }
+\NormalTok{[43] rappdirs\_0.3.3         bitops\_1.0{-}7           grid\_4.2.1            }
+\NormalTok{[46] gtable\_0.3.1           lifecycle\_1.0.3        DBI\_1.1.3             }
+\NormalTok{[49] magrittr\_2.0.3         scales\_1.2.1           cli\_3.4.1             }
+\NormalTok{[52] stringi\_1.7.8          cachem\_1.0.6           XVector\_0.36.0        }
+\NormalTok{[55] xml2\_1.3.3             filelock\_1.0.2         ellipsis\_0.3.2        }
+\NormalTok{[58] generics\_0.1.3         vctrs\_0.4.2            tools\_4.2.1           }
+\NormalTok{[61] bit64\_4.0.5            glue\_1.6.2             hms\_1.1.2             }
+\NormalTok{[64] rsconnect\_0.8.27       yaml\_2.3.6             fastmap\_1.1.0         }
+\NormalTok{[67] AnnotationDbi\_1.58.0   colorspace\_2.0{-}3       memoise\_2.0.1         }
+\NormalTok{[70] knitr\_1.40 }
+\end{Highlighting}
+\end{Shaded}
+
+
+\end{document}
