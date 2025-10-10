@@ -1,17 +1,8 @@
-# instalar packages do CRAN e Bioconductor
-cran_pkgs <- c("tidyverse", "dplyr")
-bio_pkgs <- c("oligo", "GEOquery")
-
-install.packages(cran_pkgs)
-
-if (!requireNamespace("BiocManager", quietly = TRUE))
-    install.packages("BiocManager")
-BiocManager::install(bio_pkgs)
 
 # carregar libs
 library(tidyverse)
 library(dplyr)
-library(oligo)
+library(affy)
 library(GEOquery)
 
 # primeiramente, baixar e extrair os dados do site
@@ -33,10 +24,10 @@ metadata_GSE162785[metadata_GSE162785$condition == 'control 1' | metadata_GSE162
 celFiles <- list.files('Desktop/Pedro/Amostras/', full = TRUE, pattern = '\\.CEL.gz', ignore.case = TRUE)
 
 #armazenar dados em rawdata
-rawData <- read.celfiles(celFiles)
+rawData <- ReadAffy(filenames = celFiles)
 
 #Normalizar com RMA
-normalized.data_GSE162785 <- oligo::rma(rawData)
+normalized.data_GSE162785 <- rma(rawData)
 
 #salvar dados matrix de expressao em normalized.expr
 GSE162785 <- as.data.frame(exprs(normalized.data_GSE162785))
